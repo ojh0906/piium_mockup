@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/market/edit_market.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+    <script>
+        $( document ).ready(function() {
+            var sid = getParameterByName('sid');
+
+            // 카테고리 목록 불러오기
+            StoreCategoryList();
+            // 가게 상세정보
+            storeInfoAdm(sid);
+
+            $(".menu-management").attr("href", "/store/menuManage?sid="+ sid)
+        });
+    </script>
+
+    <div id="wrap">
+
+         <!-- Content Section -->
+         <section id="container">
+            <p class="font-big page-title">가게 정보 수정</p>
+            <div class="form-wrap">
+                <form name="market-form" id="market-form" type="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); return saveImage();">
+                    <input type="hidden" name="store" value="" />
+                    <p class="input-label">가게명</p>
+                    <input type="text" name="sname" placeholder="가게명을 입력해주세요."/>
+                    <p class="input-label">카테고리</p>
+                    <div class="checkbox-wrap category-wrap">
+                    </div>
+
+
+                    <p class="input-label">영업일</p>
+                    <div class="checkbox-wrap openday-wrap">
+                        <label>
+                            <input type="checkbox" class="workdays1" name="workdays" value="1"/>
+                            월
+                        </label>
+                        <label>
+                            <input type="checkbox" class="workdays2" name="workdays" value="2"/>
+                            화
+                        </label>
+                        <label>
+                            <input type="checkbox" class="workdays3" name="workdays" value="3"/>
+                            수
+                        </label>
+                        <label>
+                            <input type="checkbox" class="workdays4" name="workdays" value="4"/>
+                            목
+                        </label>
+                        <label>
+                            <input type="checkbox" class="workdays5" name="workdays" value="5"/>
+                            금
+                        </label>
+                        <label>
+                            <input type="checkbox" class="workdays6" name="workdays"  value="6"/>
+                            토
+                        </label>
+                        <label>
+                            <input type="checkbox" class="workdays7" name="workdays"  value="7"/>
+                            일
+                        </label>
+                    </div>
+                    <p class="input-label">영업시작 시간</p>
+                    <input type="time" name="sthm" />
+                    <p class="input-label">영업종료 시간</p>
+                    <input type="time" name="ndhm" />
+                    <p class="input-label">휴무정보</p>
+                    <input type="text" name="holidayInfo" placeholder="휴무정보를 입력해주세요."/>
+                    <p class="input-label">전화번호</p>
+                    <input type="text" name="sphone" placeholder="010-1111-1111 형태로 입력해주세요."/>
+                    <p class="input-label">카카오 채널 링크</p>
+                    <input type="text" name="kakao" placeholder="카카오톡 상담 채널 주소를 입력해주세요."/>
+                    <p class="input-label">주소</p>
+                    <input type="text" id="addr" name="address" placeholder="주소를 입력해주세요." readonly/>
+                    <p class="input-label">가게 이미지 등록 </p>
+                    <p class="small">*첫번째 이미지는 대표이미지로 노출됩니다.</p>
+                    <div class="img-upload-wrap">
+
+                    </div>
+                    <p class="img-add-btn">이미지 추가</p>
+                    <p class="input-label">매장 소개</p>
+                    <textarea name="sinfo" class="sinfo" placeholder="매장 소개를 작성해주세요."> </textarea>
+
+                    <a class="menu-management" href="" target="_blank">메뉴 관리</a>
+
+                    <input type="submit" value="수정하기" />
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    var test;
+
+    $(document).ready(function() {
+        // 이미지 Preview
+        $('.img-upload-wrap').on('change', '.img-file',  function(e){
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+            var preview = $(this).siblings('.controll-wrap').find('.preview');
+            var text =  $(this).siblings('.controll-wrap').find('.no-img');
+            filesArr.forEach(function(f) {
+                if(!f.type.match("image.*")) {
+                    alert("확장자는 이미지 확장자만 가능합니다.");
+                    return;
+                }
+                sel_file = f;
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.show();
+                    text.hide();
+                    preview.attr("src", e.target.result);
+
+                }
+                reader.readAsDataURL(f);
+            });
+
+        });
+    });
+
+    $(function (e) {
+        // 이미지 파일 추가 버튼
+        $('.img-add-btn').click(function(){
+            var idx = $('.img-upload-wrap').children().length;
+            var fileadd = '<div class="img-upload-item">'
+                         +'   <input class="img-file" type="file" accept="image/*" name="simg'+idx+'" />'
+                         +'   <div class="controll-wrap">'
+                         +'     <div class="img-preview">'
+                         +'        <p class="no-img">등록된 이미지 없음</p>'
+                         +'        <img class="preview"/>'
+                         +'     </div>'
+                         +'     <div class="delete-wrap">'
+                         +'        <input type="hidden" name="type" value="N"/>'
+                         +'        <span class="img-del-btn">삭제</span>'
+                         +'        <span class="img-location-btn">약도</span>'
+                         +'     </div>'
+                         +'  </div>'
+                         +'</div>';
+            $(".img-upload-wrap").append(fileadd);
+        });
+
+        // 이미지 추가 파일 삭제
+        $('.img-upload-wrap').on('click', '.img-del-btn' ,function() {
+            if(confirm('해당이미지는 바로 삭제됩니다. 그래도 진행하시겠습니까?')){
+                deleteImage(this);
+            }
+        });
+        //약도 이미지 체크
+        $('.img-upload-wrap').on('click', '.img-location-btn' ,function(){
+            var value = $(this).attr('id');
+            $('.img-location-btn').removeClass('checked');
+            $(this).addClass('checked');
+            $('input[name="type"]').val('N');
+            $(this).parents(".delete-wrap").children('input[name="type"]').val('L');
+            //$('input[name=location-img]').val(value);
+        });
+
+
+        window.onload = function(){
+            document.getElementById("addr").addEventListener("click", function(){
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        document.getElementById("addr").value = data.address;
+                    }
+                }).open();
+            });
+        }
+    });
+
+    // Validation
+    function checkForm(fileList) {
+        var sname = $("input[name=sname]").val();
+        var sthms = $("input[name=sthm]").val();
+        var ndhms = $("input[name=ndhm]").val();
+        var holidayinfo = $("input[name=holidayInfo]").val();
+        var tell = $("input[name=sphone]").val();
+        var addr = $("input[name=address]").val();
+        var sinfo = $("input[name=sinfo]").val();
+
+
+        if(sname == ""){
+            alert("가게명을 입력해주세요..");
+            $("input[name=sname]").focus();
+            return false;
+        }
+        else if(sthms == ""){
+            alert("영업 시작 시간을 입력해주세요,");
+            $("input[name=sthm]").focus();
+            return false;
+        }
+        else if(ndhms == ""){
+            alert("영업 종료 시간을 입력해주세요,");
+            $("input[name=ndhm]").focus();
+            return false;
+        }
+        else if(holidayinfo == ""){
+            alert("휴무 정보를 입력해주세요,");
+            $("input[name=holidayInfo]").focus();
+            return false;
+        }
+        else if(tell == ""){
+            alert("전화번호를 입력해주세요,");
+            $("input[name=phone]").focus();
+            return false;
+        }
+        else if(addr == ""){
+            alert("주소를 입력해주세요,");
+            $("input[name=address]").focus();
+            return false;
+        }
+        else if(sinfo == ""){
+            alert("주소를 입력해주세요,");
+            $("input[name=address]").focus();
+            return false;
+        }
+
+        var formJson = {};
+
+        $.map($("form[name=market-form]").serializeArray(), function(n, i){
+            if(n['name'] == 'workdays'){
+                console.log('formJson',formJson);
+                console.log('formJson[n[]]',formJson[n['name']]);
+                if(formJson[n['name']] == undefined){
+                    formJson[n['name']] = [];
+                }
+                var addJson = {
+                    "type" : n['value']
+                }
+                formJson[n['name']].push(addJson);
+            } else if(n['name'] == 'categories'){
+                console.log('formJson',formJson);
+                console.log('formJson[n[]]',formJson[n['name']]);
+                if(formJson[n['name']] == undefined){
+                    formJson[n['name']] = [];
+                }
+                var addJson = {
+                    "category" : n['value']
+                }
+                formJson[n['name']].push(addJson);
+            } else {
+                formJson[n['name']] = n['value'];
+            }
+        });
+
+        formJson['files'] = fileList;
+
+        // type setting
+        for(var i=0; i<fileList.length; i++){
+            fileList[i].type = 'N';
+        }
+
+        var doms = document.getElementsByName('type');
+        for(var i=0; i<doms.length; i++){
+            if(doms[i].value == 'L'){ // 약도 체크된 dom
+                var sfile = $(doms[i]).parents(".delete-wrap").children('input[name="sfile"]').val();
+                if(sfile != undefined && sfile != ''){ // 저장된 파일
+                    formJson['updateFiles'] = [];
+                    var updateFile = {
+                        sfile : sfile,
+                        type : 'L'
+                    };
+                    formJson['updateFiles'].push(updateFile);
+                } else { //신규 파일
+                    var fileName = $(doms[i]).parents(".img-upload-item").find('input[type="file"]').val()
+                    for(var j=0; j<fileList.length; j++){
+                        var chk = fileName.indexOf(fileList[j].name);
+                        if(chk > 0){
+                            fileList[j].type = 'L';
+                        }
+                    }
+                }
+            }
+        }
+
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/store/modifyStore",
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert("수정되었습니다.");
+                    window.location.replace('/')
+                }
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function saveImage(){
+        var data = new FormData(document.getElementById('market-form'));
+
+        $.ajax({
+            url: ServerUrl+"/file/upload",
+            processData: false,  // file전송시 필수
+            contentType: false,  // file전송시 필수
+            data: data,
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                checkForm(data.BODY);
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+                alert("가게정보를 저장하지 못했습니다. 관리자에게 문의하십시오.")
+            }
+        });
+    };
+
+    function deleteImage(target){
+        var sfile = $(target).parents(".delete-wrap").children('input[name="sfile"]').val();
+        var jsonData = {
+            sfile : sfile
+        };
+
+        if(sfile != undefined && sfile != ''){
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                url: ServerUrl+"/store/deleteFile",
+                data: JSON.stringify(jsonData),
+                success: function (result) {
+                    console.log(result);
+                    $(target).parents(".img-upload-item").remove();
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("이미지 삭제에 문제가 발생하였습니다. 관리자에게 문의하세요.");
+                }
+            });
+        } else {
+            $(target).parents(".img-upload-item").remove();
+        }
+    };
+</script>
+</body>
+</html>
+
+

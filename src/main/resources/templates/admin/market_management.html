@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/admin.js"></script>
+
+</head>
+<body>
+
+<script>
+
+    $( document ).ready(function() {
+        marketList();
+
+    });
+</script>
+<body>
+    <div id="wrap">
+        <div class="gnb-container">
+            <p class="site-name">피움 <span class="logout" onclick="fnLogout()"><i class="fas fa-sign-out-alt"></i></span></p>
+            <div class="gnb-wrap">
+                <div class="menu-item ">
+                    <a class="member-menu" href="/admin/memberManage"><i class="far fa-user"></i>회원 관리</a>
+                </div>
+                <div class="menu-item active" >
+                    <a class="market-menu" href="/admin/marketManage"><i class="fas fa-store"></i>시장 관리</a>
+                </div>
+                <div class="menu-item " >
+                    <a class="market-menu" href="/admin/storeManage"><i class="fas fa-store"></i>가게 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/eventManage"><i class="fas fa-star"></i>이벤트 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/noticeManage"><i class="fas fa-bullhorn"></i></i>공지사항 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/categoryManage"><i class="fas fa-book-open"></i>카테고리 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="site-menu" href="/admin/siteManage"><i class="fas fa-list-ul"></i>사이트 관리</a>
+                </div>
+            </div>
+        </div>
+         <!-- Content Section -->
+         <section id="container">
+            <p class="page-name">시장 관리</p>
+            <div class="list-container">
+                <div class="search-wrap">
+                    <!-- <form>
+                        <input type="hidden" name="mtype" value="1" />
+                        <span class="mtype-btn nomal active">일반 회원</span>
+                        <span class="mtype-btn market">가게 회원</span>
+                        <input type="text" placeholder="검색하실 회원명을 입력해주세요."/>
+                        <input type="submit" value="검색" />
+                    </form> -->
+                </div>
+                <div class="list-wrap">
+                    <form name="market-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+                        <div class="list-header">
+                            <span class="total">Total. <strong class="totalNum">10</strong></span>
+                            <input type="submit" class="del-btn" value="삭제" />
+                        </div>
+                        <table class="member-table">
+                            <thead>
+                                <th style="width:5%">
+                                </th>
+                                <th style="width:5%">
+                                    번호
+                                </th>
+                                <th style="width:10%">
+                                    시장등록일
+                                </th>
+                                <th style="width:15%">
+                                    시장 이름
+                                </th>
+                                <th style="width:10%">
+                                    연락처
+                                </th>
+                                <th style="width:15%">
+                                    이메일
+                                </th>
+                                <th style="width:30%">
+                                    주소
+                                </th>
+                            </thead>
+                            <tbody id="market-list">
+                            <tr>
+                                <td colspan="6">시장 정보가 없습니다.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="write-wrap">
+                            <a href="/admin/marketDetail?cmd=1">등록</a>
+                        </div>
+
+                        <div class="paging-wrap">
+                            <ul>
+                                <li>
+                                    <a href="#">&#60;</a>
+                                </li>
+                                <li>
+                                    <a href="#">1</a>
+                                </li>
+                                <li>
+                                    <a href="#">2</a>
+                                </li>
+                                <li>
+                                    <a href="#">3</a>
+                                </li>
+                                <li>
+                                    <a href="#">4</a>
+                                </li>
+                                <li>
+                                    <a href="#">5</a>
+                                </li>
+                                <li>
+                                    <a href="#">&#62;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    //Form Validation
+    function checkForm() {
+        var selectedCheck = new Array();
+        $('.delChk:checked').each(function() {
+            selectedCheck.push(this.value);
+        });
+        if(selectedCheck.length < 1 ){
+            alert('최소한 1개 이상 항목을 선택하셔야 합니다');
+            return false;
+        }
+
+        var formJson = {};
+
+        var con = confirm("선택하신 시장정보를 삭제하시겠습니까?");
+
+        if(con){
+
+            var chk_arr = $("input[name='chk[]']");
+
+            for( var i=0; i<chk_arr.length; i++ ) {
+                if( chk_arr[i].checked == true ) {
+
+                    var data = {market : chk_arr[i].value};
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-HTTP-Method-Override": "POST"
+                        },
+                        url: ServerUrl+"/admin/deleteMarket",
+                        data: JSON.stringify(data),
+                        success: function(result) {
+                            console.log(result);
+                        },
+                        error: function(result) {
+                            console.log(result);
+                        }
+                    });
+                }
+            }
+            alert('삭제되었습니다.');
+            window.location.reload()
+
+        }else{
+            return;
+        }
+    }
+</script>
+</body>
+</html>
+
+

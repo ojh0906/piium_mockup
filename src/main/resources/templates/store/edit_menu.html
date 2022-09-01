@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/market/menu-management.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+<body>
+
+    <script>
+        var cmd;
+        var formChg;
+        var msg;
+
+        $( document ).ready(function() {
+
+
+             cmd = getParameterByName('cmd');
+
+            if(cmd == 1){
+                var sid = getParameterByName('sid');
+                $('#store').val(sid);
+                $('#menu').remove();
+                $('.submit').val('저장');
+                formChg = '/store/saveMenu';
+                msg = '저장되었습니다.';
+            } else if(cmd == 2){
+                var mid = getParameterByName('mid');
+                $('#menu').val(mid);
+                $('#store').remove();
+                menuInfoAdm(mid);
+                $('#menu').val(mid);
+                formChg = '/store/modifyMenu';
+                msg = '수정되었습니다.';
+            }
+
+
+
+        });
+    </script>
+
+    <div id="wrap">
+
+         <!-- Content Section -->
+         <section id="container">
+            <p class="font-big page-title">메뉴추가</p>
+            <div class="menu-container">
+                <form name="menu-form" id="menu-form" type="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); return saveImage();">
+                    <input type="hidden" name="menu" id="menu" value=""/>
+                    <input type="hidden" name="store" id="store" value=""/>
+                    <p class="input-label">메뉴 명</p>
+                    <input type="text" name="mname" placeholder="메뉴 명을 입력해주세요.">
+                    <p class="input-label">메뉴 설명</p>
+                    <textarea class="minfo" name="minfo"></textarea>
+                    <p class="input-label">가격</p>
+                    <div class="price-wrap">
+                        <input type="text" name="price" id="price" onkeyup="inputNumberFormat(this);" placeholder="메뉴 가격을 입력해주세요.">
+                        <span>원</span>
+                    </div>
+                    <p class="input-label">시세 일자</p>
+                    <input type="date" name="pricedt">
+                    <p class="input-label">메뉴 이미지 등록 </p>
+                    <div class="img-upload-wrap">
+                        <div class="img-upload-item" id="img">
+                            <input id="img1" class="img-file" type="file" name="simg[]" />
+                            <div class="controll-wrap">
+                                <div class="img-preview">
+                                    <p class="no-img">등록된 이미지 없음</p>
+                                    <img class="preview" src="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-wrap">
+                        <input class="submit" type="submit" value="수정" />
+                        <a class="cancel" href="javascript:window.history.back();">취소</a>
+                    </div>
+                </form>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    // 이미지 Preview
+    $('.img-upload-wrap').on('change', '.img-file',  function(e){
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+            var preview = $(this).siblings('.controll-wrap').find('.preview');
+            var text =  $(this).siblings('.controll-wrap').find('.no-img');
+            filesArr.forEach(function(f) {
+                if(!f.type.match("image.*")) {
+                    alert("확장자는 이미지 확장자만 가능합니다.");
+                    return;
+                }
+                sel_file = f;
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.show();
+                    text.hide();
+                    preview.attr("src", e.target.result);
+
+                }
+                reader.readAsDataURL(f);
+            });
+
+        });
+
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[^\d]+/g, '');
+    }
+    function inputNumberFormat(obj) {
+        obj.value = comma(uncomma(obj.value));
+    }
+    function inputOnlyNumberFormat(obj) {
+        obj.value = onlynumber(uncomma(obj.value));
+    }
+    function onlynumber(str) {
+	    str = String(str);
+	    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1');
+	}
+    // Validation
+    function checkForm(fileList) {
+        var mname = $("input[name=mname]").val();
+        var minfo = $(".minfo").val();
+        var price = $("input[name=price]").val();
+
+        if(mname == ""){
+            alert("메뉴명을 입력해주세요..");
+            $("input[name=mname]").focus();
+            return false;
+        }
+        else if(minfo == ""){
+            alert("메뉴 설명을 입력해주세요,");
+            $(".minfo").focus();
+            return false;
+        }
+        else if(price == ""){
+            alert("가격을 입력해주세요,");
+            $("input[name=price]").focus();
+            return false;
+        }
+
+        var formJson = {};
+        $.map($("form[name=menu-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+
+        formJson['files'] = fileList;
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+formChg,
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert(msg);
+                    var sid = getParameterByName('sid');
+                    window.location.replace('/store/menuManage?sid='+sid);
+                }
+                if( cmd == 1){
+                    window.history.back();
+                }
+
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function saveImage(){
+        var data = new FormData(document.getElementById('menu-form'));
+
+        var file = document.getElementById('img1').value;
+
+        if(file == ''){ // 내용만 수정
+            checkForm([]);
+        } else {
+            $.ajax({
+                url: ServerUrl+"/file/upload",
+                processData: false,  // file전송시 필수
+                contentType: false,  // file전송시 필수
+                data: data,
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    checkForm(data.BODY);
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("메뉴정보를저장하지 못했습니다. 관리자에게 문의하십시오.")
+                }
+            });
+        }
+    };
+</script>
+</body>
+</html>
+
+

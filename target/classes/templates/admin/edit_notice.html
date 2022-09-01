@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <script src="../resource/js/admin.js"></script>
+
+</head>
+<body>
+
+    <script>
+
+        var cmd;
+        var formChg;
+        var msg;
+
+        $( document ).ready(function() {
+            var nid = getParameterByName('nid');
+            cmd = getParameterByName('cmd');
+
+            if(cmd == 1){
+                formChg = '/admin/saveNotice';
+                msg = '등록되었습니다.';
+                $('#notice').remove();
+                $('input[type=submit]').val('저장');
+            }
+            else if(cmd == 2){
+                formChg = '/admin/modifyNotice';
+                msg = '수정되었습니다.';
+                $('#notice').val(nid);
+                getNotice(nid);
+            }
+
+        });
+    </script>
+
+
+    <div id="wrap">
+        <div class="gnb-container">
+            <p class="site-name">피움 <span class="logout" onclick="fnLogout()"><i class="fas fa-sign-out-alt"></i></span></p>
+            <div class="gnb-wrap">
+                <div class="menu-item">
+                    <a class="member-menu" href="/admin/memberManage"><i class="far fa-user"></i>회원 관리</a>
+                </div>
+                <div class="menu-item" >
+                    <a class="market-menu" href="/admin/marketManage"><i class="fas fa-store"></i>시장 관리</a>
+                </div>
+                <div class="menu-item " >
+                    <a class="market-menu" href="/admin/storeManage"><i class="fas fa-store"></i>가게 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/eventManage"><i class="fas fa-star"></i>이벤트 관리</a>
+                </div>
+                <div class="menu-item active">
+                    <a class="market-menu" href="/admin/noticeManage"><i class="fas fa-bullhorn"></i></i>공지사항 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/categoryManage"><i class="fas fa-book-open"></i>카테고리 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="site-menu" href="/admin/siteManage"><i class="fas fa-list-ul"></i>사이트 관리</a>
+                </div>
+            </div>
+        </div>
+         <!-- Content Section -->
+         <section id="container">
+            <p class="page-name">공지사항 관리</p>
+            <div class="notice-write-container">
+                <form name="notice-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+                    <input type="hidden" name="notice" id="notice" value="" />
+                    <p class="input-label">제목</p>
+                    <input type="text" name="title" value="" placeholder="제목을 입력하세요." />
+                    <p class="input-label">내용</p>
+                    <textarea id="smartEditor" class="contents" name="contents" placeholder="내용을 입력하세요."></textarea>
+
+                    <div class="btn-wrap">
+                        <input type="submit" value="확인" />
+                        <a href="javascript:window.history.back();">취소</a>
+                    </div>
+                </form>
+            </div>
+
+        </section>
+    </div>
+</body>
+<style>
+    textarea{
+        width: 100%;
+        height: 300px;
+        box-sizing: border-box;
+        outline: none;
+        border: 1px solid #d8e0e8;
+        font-size: 16px;
+        padding: 5px 10px;
+        box-shadow: 4px 2px 18px 1px rgb(0 0 0 / 7%);
+        resize: none;
+    }
+</style>
+<script type="text/javascript">
+    // $(function (e) {
+
+    //     var oEditors = [];
+	//     nhn.husky.EZCreator.createInIFrame({
+	// 	oAppRef : oEditors,
+	// 	elPlaceHolder : "smartEditor", //
+	// 	sSkinURI : "../resource/smarteditor/SmartEditor2Skin.html",
+	// 	fCreator : "createSEditor2",
+	// 	htParams : {
+	// 		// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+	// 		bUseToolbar : true,
+
+	// 		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+	// 		bUseVerticalResizer : false,
+
+	// 		// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+	// 		bUseModeChanger : false
+	// 	}
+	// });
+
+	// $(function() {
+	// 	$("#savebutton").click(function() {
+	// 		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
+
+
+	// 		var selcatd = $("#selcatd > option:selected").val();
+	// 		var title = $("#title").val();
+	// 		var content = document.getElementById("smartEditor").value;;
+
+	// 		if (selcatd == "") {
+	// 			alert("카테고리를 선택해주세요.");
+	// 			return;
+	// 		}
+	// 		if (title == null || title == "") {
+	// 			alert("제목을 입력해주세요.");
+	// 			$("#title").focus();
+	// 			return;
+	// 		}
+	// 		if(content == "" || content == null || content == '&nbsp;' ||
+	// 				content == '<br>' || content == '<br/>' || content == '<p>&nbsp;</p>'){
+	// 			alert("본문을 작성해주세요.");
+	// 			oEditors.getById["smartEditor"].exec("FOCUS"); //포커싱
+	// 			return;
+	// 		} //이 부분은 스마트에디터 유효성 검사 부분이니 참고하시길 바랍니다.
+
+	// 		var result = confirm("발행 하시겠습니까?");
+
+	// 		if(result){
+	// 			alert("발행 완료!");
+	// 			$("#noticeWriteForm").submit();
+	// 		}else{
+	// 			return;
+	// 		}
+	// 	});
+	// })
+    // });
+
+      //Form Validation
+      function checkForm() {
+        var title = $("input[name=title]").val();
+        var contents = $("input[name=contents]").val();
+
+        if(title == ""){
+            alert("제목을 입력해주세요.");
+            $("input[name=title]").focus();
+            return false;
+        }
+        else if(contents == ""){
+            alert("내용을 입력해주세요.");
+            $(".input[name=contents]").focus();
+            return false;
+        }
+
+        var formJson = {};
+
+        $.map($("form[name=notice-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+formChg,
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert(msg);
+                    if(cmd == 1){
+                        window.location.replace('/admin/noticeManage');
+                    }
+                }
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+
+    }
+</script>
+</body>
+</html>
+
+

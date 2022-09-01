@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/admin.js"></script>
+
+</head>
+<body>
+    <script>
+        var cmd;
+
+        $( document ).ready(function() {
+            var nid = getParameterByName('nid');
+            getNotice(nid);
+        });
+    </script>
+
+    <div id="wrap">
+        <div class="gnb-container">
+            <p class="site-name">피움 <span class="logout" onclick="fnLogout()"><i class="fas fa-sign-out-alt"></i></span></p>
+            <div class="gnb-wrap">
+                <div class="menu-item">
+                    <a class="member-menu" href="/admin/memberManage"><i class="far fa-user"></i>회원 관리</a>
+                </div>
+                <div class="menu-item" >
+                    <a class="market-menu" href="/admin/marketManage"><i class="fas fa-store"></i>시장 관리</a>
+                </div>
+                <div class="menu-item " >
+                    <a class="market-menu" href="/admin/storeManage"><i class="fas fa-store"></i>가게 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/eventManage"><i class="fas fa-star"></i>이벤트 관리</a>
+                </div>
+                <div class="menu-item active">
+                    <a class="market-menu" href="/admin/noticeManage"><i class="fas fa-bullhorn"></i></i>공지사항 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/categoryManage"><i class="fas fa-book-open"></i>카테고리 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="site-menu" href="/admin/siteManage"><i class="fas fa-list-ul"></i>사이트 관리</a>
+                </div>
+            </div>
+        </div>
+         <!-- Content Section -->
+         <section id="container">
+            <p class="page-name">공지사항 관리</p>
+            <div class="notice-detail-container">
+                <div class="notice-header">
+                    <p class="subject title"></p>
+                    <span class="regdate">2021.01.01</span>
+                </div>
+                <div class="notice-body contents">
+                    내용내용
+                </div>
+                <div class="notice-footer">
+                    <a class="modify">수정</a>
+                    <a class="delete"  href='javascript:void(0);' onclick="delNotice();">삭제</a>
+                    <a class="go-back" href="javascript:window.history.back();">목록으로</a>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<style>
+    textarea{
+        width: 100%;
+        height: 300px;
+        box-sizing: border-box;
+        outline: none;
+        border: 1px solid #d8e0e8;
+        font-size: 16px;
+        padding: 5px 10px;
+        box-shadow: 4px 2px 18px 1px rgb(0 0 0 / 7%);
+        resize: none;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+    function delNotice(){
+        var data = {notice : nid};
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/admin/deleteNotice",
+            data: JSON.stringify(data),
+            success: function(result) {
+                console.log(result);
+                alert('삭제되었습니다.');
+                window.location.replace('/admin/notice_management.html');
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+

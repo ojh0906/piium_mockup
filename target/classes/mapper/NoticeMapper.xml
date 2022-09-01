@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.mobile.dao.NoticeDao">
+    <select id="getNotice" resultType="com.itso.market.mobile.model.NOTICE">
+        SELECT *
+        FROM NOTICE
+        WHERE NOTICE = #{notice}
+    </select>
+
+    <insert id="insertNotice" parameterType="com.itso.market.mobile.model.NOTICE" useGeneratedKeys="true" keyProperty="notice">
+        INSERT INTO NOTICE
+            (TITLE, CONTENTS, REGID, CHNID)
+        VALUES
+            (#{title},#{contents},#{regId},#{chnId})
+    </insert>
+
+    <update id="updateNotice">
+        UPDATE NOTICE SET
+            TITLE = #{title},
+            CONTENTS = #{contents},
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE NOTICE = #{notice}
+    </update>
+
+    <update id="deleteNotice">
+        UPDATE NOTICE SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE NOTICE = #{notice}
+    </update>
+
+    <select id="getNoticeList" resultType="com.itso.market.mobile.model.NOTICE">
+        SELECT
+            *
+        FROM NOTICE
+        WHERE DELYN = 'N'
+        ORDER BY NOTICE DESC
+    </select>
+
+    <select id="getNoticeListForPaging" resultType="com.itso.market.mobile.model.NOTICE">
+        SELECT
+            *
+        FROM NOTICE
+        WHERE DELYN = 'N'
+        ORDER BY NOTICE DESC
+        LIMIT #{startNum}, #{num}
+    </select>
+
+    <select id="getNoticeListForPagingCnt" resultType="java.lang.Integer">
+        SELECT COUNT(NOTICE)
+        FROM NOTICE
+        WHERE DELYN = 'N'
+        ORDER BY NOTICE DESC
+    </select>
+
+    <select id="getPreNotice" resultType="com.itso.market.mobile.model.NOTICE">
+        SELECT NOTICE
+        FROM NOTICE
+        WHERE 1=1
+            AND DELYN = 'N'
+            AND NOTICE > #{notice}
+        ORDER BY NOTICE
+        LIMIT 0,1
+    </select>
+
+    <select id="getNextNotice" resultType="com.itso.market.mobile.model.NOTICE">
+        SELECT NOTICE
+        FROM NOTICE
+        WHERE 1=1
+            AND DELYN = 'N'
+            AND NOTICE <![CDATA[<]]> #{notice}
+        ORDER BY NOTICE DESC
+        LIMIT 0,1
+    </select>
+</mapper>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/manager/manager.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+
+<script>
+    var sid;
+    var formChg;
+    $( document ).ready(function() {
+        sid = getParameterByName('sid');
+        cid = getParameterByName('cid');
+        cmd = getParameterByName('cmd');
+        managerUrl(sid);
+
+        $('#store').val(sid);
+        if(cmd == 1){
+            formChg = '/manager/saveCoupon';
+            msg = '등록되었습니다.';
+            $('#coupon').remove();
+        }
+        else if(cmd == 2){
+            formChg = '/manager/modifyCoupon';
+            msg = '수정되었습니다.';
+            getCouponDetail(cid);
+            $('input[type=submit]').val('쿠폰 수정하기');
+        }
+    });
+
+</script>
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="manager-header">
+                <p>쿠폰 발행</p>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/back-icon.png"></a>
+            </div>
+            <div class="manager-body edit-body-second">
+                <div class="form-wrap">
+                    <form name="coupon-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+                        <input type="hidden" name="coupon" id="coupon" value=""/>
+                        <input type="hidden" name="store" id="store" value="" />
+                        <p class="input-label">쿠폰 종류 *</p>
+                        <select name="ctype">
+                            <option value="1">할인 쿠폰</option>
+                            <option value="2">배달비 무료</option>
+                        </select>
+                        <p class="input-label">쿠폰 이름 *</p>
+                        <input type="text" name="cname" value="" placeholder="쿠폰 이름을 입력해주세요." required />
+                        <p class="input-label">쿠폰 설정</p>
+                        <div class="coupon-price-wrap">
+                            <p class="small">*배달비 무료일 경우 입력하지 않습니다.</p>
+                            <input type="text" name="stanprice" value=""/>
+                            <span>원 이상</span>
+                            <input type="text" name="disprice" value=""/>
+                            <span>원 할인</span>
+                        </div>
+                        <p class="input-label">쿠폰 기간 *</p>
+                        <div class="date-wrap">
+                            <input type="date" name="bgndt" value=""/>
+                            <span> ~ </span>
+                            <input type="date" name="nddt" value=""/>
+                        </div>
+                        <p class="input-label">쿠폰 설명 *</p>
+                        <textarea name="cinfo" class="cinfo" required placeholder="쿠폰에 대한 설명을 입력해주세요."></textarea>
+
+                        <p class="input-label">쿠폰 유의사항 *</p>
+                        <textarea name="cnote" class="cnote" required placeholder="쿠폰에 대한 유의사항을 입력해주세요."></textarea>
+
+                        <input type="submit" value="쿠폰 발행하기" />
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+    //Form Validation
+    function checkForm() {
+
+        var formJson = {};
+
+        $.map($("form[name=coupon-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+formChg,
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert(msg);
+                    if(cmd == 1){
+                        window.location.replace('/manager/couponList?sid='+sid);
+                    }
+                }
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+</script>
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.mobile.dao.CategoryDao">
+    <select id="getCategory" resultType="com.itso.market.mobile.model.CATEGORY">
+        SELECT *
+        FROM CATEGORY
+        WHERE CATEGORY = #{category}
+    </select>
+
+    <insert id="insertCategory" parameterType="com.itso.market.mobile.model.CATEGORY" useGeneratedKeys="true" keyProperty="category">
+        INSERT INTO CATEGORY
+            (NAME, REGID, CHNID)
+        VALUES
+            (#{name},#{regId},#{chnId})
+    </insert>
+
+    <update id="updateCategory">
+        UPDATE CATEGORY SET
+            NAME = #{name},
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE CATEGORY = #{category}
+    </update>
+
+    <update id="deleteCategory">
+        UPDATE CATEGORY SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE CATEGORY = #{category}
+    </update>
+
+    <select id="getCategoryList" resultType="com.itso.market.mobile.model.CATEGORY">
+        SELECT
+            *
+        FROM CATEGORY
+        WHERE DELYN = 'N'
+        ORDER BY CATEGORY DESC
+    </select>
+
+    <update id="deleteMCategory">
+        UPDATE MCATEGORY SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE CATEGORY = #{category}
+    </update>
+
+    <update id="deleteSCategory">
+        UPDATE SCATEGORY SET
+        DELYN = 'Y',
+        CHNDATE = NOW(),
+        CHNID = #{chnId}
+        WHERE CATEGORY = #{category}
+    </update>
+</mapper>

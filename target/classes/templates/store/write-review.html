@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/store/market.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+    <script>
+        var sid;
+        var mid;
+
+        $( document ).ready(function() {
+            sid = getParameterByName('sid');
+            mid = getParameterByName('mid');
+            $('.sname').text(getParameterByName('sname'));
+            $('input[name=member]').val(mid);
+            $('input[name=store]').val(sid);
+
+        });
+
+    </script>
+
+</head>
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+
+            <div class="review-header">
+                <a href="javascript:window.history.back();"><img src="../resource/image/market/close-icon.png"></a>
+                <p>리뷰 작성</p>
+            </div>
+            <div class="review-body">
+                <p class="text"><span class="sname"></span>를(을) 방문해주셔서 감사합니다.<br><br>전통시장의 활성화를 위해<br>리뷰 작성을 부탁드립니다.</p>
+                <div class="rate-container">
+                    <span class="tit">평가</span>
+                    <div class="rate-wrap">
+                        <span class="rate-item">
+                            <img class="rate-img" src="../resource/image/store/rate-on.png">
+                        </span>
+                        <span class="rate-item">
+                            <img class="rate-img" src="../resource/image/store/rate-off.png">
+                        </span>
+                        <span class="rate-item">
+                            <img class="rate-img" src="../resource/image/store/rate-off.png">
+                        </span>
+                        <span class="rate-item">
+                            <img class="rate-img" src="../resource/image/store/rate-off.png">
+                        </span>
+                        <span class="rate-item">
+                            <img class="rate-img" src="../resource/image/store/rate-off.png">
+                        </span>
+                    </div>
+                </div>
+                <form name="review-form" type="post" onsubmit="event.preventDefault();return checkForm();">
+                    <input type="hidden" name="member" value="">
+                    <input type="hidden" name="store" value="">
+                    <input type="hidden" name="rate" value="1" />
+                    <div class="textarea-wrap">
+                        <textarea class="contents" name="contents" placeholder="리뷰를 작성해주세요."></textarea>
+                        <span class="counter">0/500글자</span>
+                    </div>
+                    <input type="submit" value="작성 완료" />
+                </form>
+
+            </div>
+
+
+            <!-- Floating Bottom Menu -->
+            <div class="floating-menu-container">
+                <div class="wrapper">
+                    <div class="menu-item">
+                        <a href="#">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/home-off.png">
+                            </div>
+                        <p class="menu-name">홈</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/coupon-off.png">
+                            </div>
+                            <p class="menu-name">쿠폰</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/search-off.png">
+                            </div>
+                            <p class="menu-name">위치</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/mypage-off.png">
+                            </div>
+                            <p class="menu-name">내 정보</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+        //서류사항 textarea 체크
+        $('textarea').keyup(function (e){
+            var content = $(this).val();
+            $('.counter').html(content.length+"/500글자");    //글자수 실시간 카운팅
+
+            if (content.length > 200){
+                alert("최대 200자까지 입력 가능합니다.");
+                $(this).val(content.substring(0, 200));
+                $('.counter').html("(200 / 최대 200자)");
+            }
+        });
+    });
+
+    $('.rate-item').click(function(){
+        var indexNo = $(this).index() + 1;
+
+        var i;
+        for(i = 0; i < indexNo; i++){
+            $('.rate-item').eq(i).find('.rate-img').attr("src", "../resource/image/store/rate-on.png");;
+        }
+        $('input[name="rate"]').val(i);
+    });
+
+    // Validation
+    function checkForm() {
+        var rate = $("input[name=rate]").val();
+
+        if(rate == ""){
+            alert("리뷰 내용을 입력해주세요..");
+            $("input[name=rate]").focus();
+            return false;
+        }
+
+        var formJson = {};
+        $.map($("form[name=review-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/user/saveReview",
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert('등록되었습니다.');
+                    $(location).attr('href', '/main/info?sid='+sid);
+                }
+                if( cmd == 1){
+                    window.history.back();
+                }
+
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+
+    }
+
+</script>
+
+</script>
+</body>
+</html>
+

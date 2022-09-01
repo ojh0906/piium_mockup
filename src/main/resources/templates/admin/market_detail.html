@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="../resource/js/admin.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf45249452b9fe157c9b01c87080f2be&libraries=services"></script>
+
+</head>
+<body>
+<script>
+
+    var cmd;
+    var formChg;
+    var msg;
+
+    $( document ).ready(function() {
+        var mid = getParameterByName('mid');
+        cmd = getParameterByName('cmd');
+        getCategoryList();
+        if(cmd == 1){
+            formChg = '/admin/saveMarket';
+            msg = '등록되었습니다.';
+            $('#market').remove();
+        }
+        else if(cmd == 2){
+            formChg = '/admin/modifyMarket';
+            msg = '수정되었습니다.';
+            $('#market').val(mid);
+            getMarket(mid);
+        }
+
+    });
+</script>
+<body>
+    <div id="wrap">
+        <div class="gnb-container">
+            <p class="site-name">피움 <span class="logout" onclick="fnLogout()"><i class="fas fa-sign-out-alt"></i></span></p>
+            <div class="gnb-wrap">
+                <div class="menu-item ">
+                    <a class="member-menu" href="/admin/memberManage"><i class="far fa-user"></i>회원 관리</a>
+                </div>
+                <div class="menu-item active" >
+                    <a class="market-menu" href="/admin/marketManage"><i class="fas fa-store"></i>시장 관리</a>
+                </div>
+                <div class="menu-item " >
+                    <a class="market-menu" href="/admin/storeManage"><i class="fas fa-store"></i>가게 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/eventManage"><i class="fas fa-star"></i>이벤트 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/noticeManage"><i class="fas fa-bullhorn"></i></i>공지사항 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/categoryManage"><i class="fas fa-book-open"></i>카테고리 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="site-menu" href="/admin/siteManage"><i class="fas fa-list-ul"></i>사이트 관리</a>
+                </div>
+            </div>
+        </div>
+         <!-- Content Section -->
+         <section id="container">
+            <p class="page-name">회원 관리</p>
+
+            <div class="detail-container">
+                <form name="market-form" id="market-form" type="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); return saveImage();">
+                    <input type="hidden" name="market" id="market" />
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">시장 이름</p>
+                            <input type="text" name="name" value="" placeholder="시장의 이름을 입력해주세요" required/>
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">연락처</p>
+                            <input type="text" name="phone" value="" placeholder="연락처를 입력해주세요" required/>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">담당자 이름</p>
+                            <input type="text" name="manager" value="" placeholder="담당자 이름을 입력해주세요." required/>
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">이메일</p>
+                            <input type="text" name="email" value="" placeholder="이메일을 입력해주세요." required/>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">휴일 정보 입력</p>
+                            <input type="text" name="holiday" value="" placeholder="휴일 정보를 작성해주세요." required/>
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">홈페이지</p>
+                            <input type="text" name="homepage" value="" placeholder="홈페이지URL을 입력해주세요."/>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">이용시간</p>
+                            <input type="text" name="open" value="" placeholder="이용시간을 입력해주세요." required/>
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">주차 정보</p>
+                            <input type="text" name="park" value="" placeholder="주차 정보를 입력해주세요." required/>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap long">
+                            <p class="input-label">주소</p>
+                            <input type="text" name="address" value="" id="addr" placeholder="주소를 입력해주세요." readonly required/>
+                            <input type="hidden" name="lat" id="lat" value="" />
+                            <input type="hidden" name="lon" id="lon" value="" />
+                            <span class="location-btn" id="location-btn" >주소 검색</span>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap full">
+                            <p class="input-label">카테고리</p>
+                            <div class="category-wrap">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap long">
+                            <p class="input-label">시장 이미지 등록 (최대 3개)</p>
+                            <div class="img-upload-wrap" id="imgFile">
+                                <div class="img-upload-item">
+                                    <input id="img1" class="img-file" type="file" accept="image/*" name="pimg" />
+                                    <div class="controll-wrap">
+                                        <div class="img-preview">
+                                            <p class="no-img">등록된 이미지 없음</p>
+                                            <img class="preview" src="" />
+                                        </div>
+                                        <div class="delete-wrap">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="img-add-btn">이미지 추가</p>
+                        </div>
+                    </div>
+
+
+                    <div class="input-line">
+                        <div class="input-wrap full">
+                            <p class="input-label">상세정보</p>
+                            <textarea name="detail" placeholder="상세설명을 입력해주세요." ></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="btn-area">
+                        <input type="submit" value="확인" />
+                        <a href="javascript:window.history.back();">취소</a>
+                    </div>
+                </form>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function() {
+        // 이미지 Preview
+        $('.img-upload-wrap').on('change', '.img-file',  function(e){
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+            var preview = $(this).siblings('.controll-wrap').find('.preview');
+            var text =  $(this).siblings('.controll-wrap').find('.no-img');
+            filesArr.forEach(function(f) {
+                if(!f.type.match("image.*")) {
+                    alert("확장자는 이미지 확장자만 가능합니다.");
+                    return;
+                }
+                sel_file = f;
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.show();
+                    text.hide();
+                    preview.attr("src", e.target.result);
+
+                }
+                reader.readAsDataURL(f);
+            });
+
+        });
+    });
+
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    $(function (e) {
+
+        // 이미지 파일 추가 버튼
+        $('.img-add-btn').click(function(){
+            var fileadd = '<div class="img-upload-item">'
+                +'   <input class="img-file" type="file" name="eimg[]" />'
+                +'   <div class="controll-wrap">'
+                +'     <div class="img-preview">'
+                +'        <p class="no-img">등록된 이미지 없음</p>'
+                +'        <img class="preview"/>'
+                +'     </div>'
+                +'     <div class="delete-wrap">'
+                +'        <span class="img-del-btn">삭제</span>'
+                +'     </div>'
+                +'  </div>';
+            +'</div>';
+            $(".img-upload-wrap").append(fileadd);
+        });
+        // 이미지 추가 파일 삭제
+        $('.img-upload-wrap').on('click', '.img-del-btn' ,function() {
+            if(confirm('해당이미지는 바로 삭제됩니다. 그래도 진행하시겠습니까?')){
+                deleteImage(this);
+            }
+        });
+
+
+
+        window.onload = function(){
+            document.getElementById("location-btn").addEventListener("click", function(){
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        document.getElementById("addr").value = data.address;
+                        getLatLon(data.address);
+                    }
+                }).open();
+            });
+        }
+    });
+
+    function getLatLon(addr) {
+        geocoder.addressSearch(addr, function(result, status) {
+
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK) {
+                console.log(result[0]);
+                $("#lat").val(result[0].y);
+                $("#lon").val(result[0].x);
+            }
+        });
+    }
+    //Form Validation
+    function checkForm(fileList) {
+
+        var selectedCheck = new Array();
+        $('input[name=categories]:checked').each(function() {
+            selectedCheck.push(this.value);
+        });
+
+        var address = $("input[name=address]").val();
+
+        if(address == ""){
+            alert("주소를 입력해주세요.");
+            $("input[name=address]").focus();
+            return false;
+        }
+        else if(selectedCheck.length < 1 ){
+            alert('최소한 1개 이상의 카테고리를 선택하셔야 합니다');
+            return false;
+        }
+
+        var formJson = {};
+
+        $.map($("form[name=market-form]").serializeArray(), function(n, i){
+            if(n['name'] == 'categories'){
+                console.log('formJson',formJson);
+                console.log('formJson[n[]]',formJson[n['name']]);
+                if(formJson[n['name']] == undefined){
+                    formJson[n['name']] = [];
+                }
+                var addJson = {
+                    "category" : n['value']
+                }
+                formJson[n['name']].push(addJson);
+            } else {
+                formJson[n['name']] = n['value'];
+            }
+        });
+
+        formJson['files'] = fileList;
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+formChg,
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert(msg);
+                }
+                window.location.reload();
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+var test;
+    function deleteImage(target){
+        var mrfile = $(target).parents(".delete-wrap").children('input[name="mrfile"]').val();
+        var jsonData = {
+            mrfile : mrfile
+        };
+
+        test = target;
+        console.log(mrfile);
+
+        if(mrfile != undefined && mrfile != ''){
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                url: ServerUrl+"/admin/deleteMarketFile",
+                data: JSON.stringify(jsonData),
+                success: function (result) {
+                    console.log(result);
+                    $(target).parents(".img-upload-item").remove();
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("이미지 삭제에 문제가 발생하였습니다. 관리자에게 문의하세요.");
+                }
+            });
+        } else {
+            $(target).parents(".img-upload-item").remove();
+        }
+    }
+
+    function saveImage(){
+        var data = new FormData(document.getElementById('market-form'));
+
+        $.ajax({
+            url: ServerUrl+"/file/upload",
+            processData: false,  // file전송시 필수
+            contentType: false,  // file전송시 필수
+            data: data,
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                checkForm(data.BODY);
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+                alert("가게정보를 저장하지 못했습니다. 관리자에게 문의하십시오.")
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+

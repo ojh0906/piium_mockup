@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="../resource/js/admin.js"></script>
+
+</head>
+<body>
+    <script>
+
+        var cmd;
+        var formChg;
+        var msg;
+
+        $( document ).ready(function() {
+            var mid = getParameterByName('mid');
+            cmd = getParameterByName('cmd');
+
+            if(cmd == 1){
+                formChg = '/admin/saveMember';
+                msg = '등록되었습니다.';
+                $('#member').remove();
+                $('.mtype').remove();
+                $('input[type=submit]').val('저장');
+            }
+            else if(cmd == 2){
+                formChg = '/admin/modifyMember';
+                msg = '수정되었습니다.';
+                $('.role-wrap').remove();
+                $('#member').val(mid);
+                $("input[name=id]" ).prop('readonly', true);
+                getMember(mid);
+            }
+
+        });
+    </script>
+
+    <div id="wrap">
+        <div class="gnb-container">
+            <p class="site-name">피움 <span class="logout" onclick="fnLogout()"><i class="fas fa-sign-out-alt"></i></span></p>
+            <div class="gnb-wrap">
+                <div class="menu-item active">
+                    <a class="member-menu" href="/admin/memberManage"><i class="far fa-user"></i>회원 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/marketManage"><i class="fas fa-store"></i>시장 관리</a>
+                </div>
+                <div class="menu-item " >
+                    <a class="market-menu" href="/admin/storeManage"><i class="fas fa-store"></i>가게 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/eventManage"><i class="fas fa-star"></i>이벤트 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/noticeManage"><i class="fas fa-bullhorn"></i></i>공지사항 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/categoryManage"><i class="fas fa-book-open"></i>카테고리 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="site-menu" href="/admin/siteManage"><i class="fas fa-list-ul"></i>사이트 관리</a>
+                </div>
+            </div>
+        </div>
+         <!-- Content Section -->
+         <section id="container">
+            <p class="page-name">회원 관리</p>
+
+            <div class="detail-container">
+<!--                <p class="mtype rollUser"><i class="far fa-smile"></i></i>일반 회원</p>-->
+<!--                <p class="mtype rollStore"><i class="fas fa-shopping-cart"></i>가게 회원<a class="market-btn" href="#">가게 관리</a></p>-->
+                <form name="member-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+
+                    <div class="input-line roll-wrap">
+                        <div class="input-wrap">
+                            <p class="input-label">회원 구분</p>
+                            <select name="roll">
+                                <option value="ROLE_USER">일반회원</option>
+                                <option value="ROLE_STORE">가게회원</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="member" id="member" value="" />
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">아이디</p>
+                            <input type="text" name="id" value="" placeholder="아이디를 입력해주세요." />
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">비밀번호</p>
+                            <input type="password" name="pw" placeholder="비밀번호 입력해주세요." value="" />
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">이름</p>
+                            <input type="text" name="name" placeholder="이름을 입력해주세요." value=""/>
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">전화번호</p>
+                            <input type="text" name="phone" placeholder="전화번호를 입력해주세요." value="" />
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">이메일</p>
+                            <input type="text" name="email" placeholder="이메일을 입력해주세요." value=""/>
+                        </div>
+                        <div class="input-wrap long">
+                            <p class="input-label">주소</p>
+                            <input type="text" name="address" id="addr" placeholder="주소를 입력해주세요." value="" readonly/>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <div class="input-wrap">
+                            <p class="input-label">가입일</p>
+                            <input type="text" name="regDate" placeholder="자동으로 입력됩니다." value="" readonly/>
+                        </div>
+                        <div class="input-wrap">
+                            <p class="input-label">변경일</p>
+                            <input type="text" name="chnDate" placeholder="자동으로 입력됩니다." value="" readonly/>
+                        </div>
+                    </div>
+                    <div class="btn-area" >
+                        <input type="submit" value="수정" />
+                        <a href="javascript:window.history.back();">취소</a>
+                    </div>
+                </form>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    $(function (e) {
+
+        window.onload = function(){
+            document.getElementById("addr").addEventListener("click", function(){
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        document.getElementById("addr").value = data.address;
+                    }
+                }).open();
+            });
+        }
+    });
+    //Form Validation
+    function checkForm() {
+        var id = $("input[name=id]").val();
+        var pw = $("input[name=password]").val();
+        var name = $("input[name=name]").val();
+        var phone = $("input[name=phone]").val();
+        var address = $("input[name=address]").val();
+
+
+        // if(pw == ""){
+        //     alert("비밀번호를 입력해주세요.");
+        //     $("input[name=userpw]").focus();
+        //     return false;
+        // }
+        // else if(pwCheck == 0){
+        //     alert("비밀번호가 일치하지 않습니다.");
+        //     $("#pw2").focus();
+        //     return false;
+        // }
+        if(id == ""){
+            alert("아이디를 입력해주세요.");
+            $("input[name=id]").focus();
+            return false;
+        }
+        else if(phone == ""){
+            alert("전화번호를 입력해주세요.");
+            $("input[name=phone]").focus();
+            return false;
+        }
+        else if(address == ""){
+            alert("전화번호를 입력해주세요.");
+            $("input[name=address]").focus();
+            return false;
+        }
+        var formJson = {};
+
+        $.map($("form[name=member-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+formChg,
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert(msg);
+                    if(cmd == 1){
+                        window.location.replace('/admin/memberManage');
+                    }
+                }
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+

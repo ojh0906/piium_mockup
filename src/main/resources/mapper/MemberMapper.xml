@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.mobile.dao.MemberDao">
+    <select id="getMember" resultType="com.itso.market.mobile.model.MEMBER">
+        SELECT
+            *
+        FROM MEMBER
+        WHERE MEMBER = #{member}
+    </select>
+
+    <insert id="insertMember">
+        INSERT INTO MEMBER
+            (ID, PW, NAME, PHONE, EMAIL, ADDRESS, ROLE, REGID, CHNID)
+        VALUES
+            (#{id}, #{pw}, #{name}, #{phone}, #{email}, #{address}, #{role}, #{regId}, #{chnId})
+    </insert>
+
+    <update id="updateMember">
+        UPDATE MEMBER SET
+            NAME = #{name},
+            PHONE = #{phone},
+            EMAIL = #{email},
+            ADDRESS = #{address},
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MEMBER = #{member}
+    </update>
+
+    <update id="deleteMember">
+        UPDATE MEMBER SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MEMBER = #{member}
+    </update>
+
+    <select id="getIdCheck" resultType="com.itso.market.mobile.model.MEMBER">
+        SELECT * FROM MEMBER
+        WHERE ID = #{id}
+    </select>
+
+    <select id="getMemberList" resultType="com.itso.market.mobile.model.MEMBER">
+        SELECT * FROM MEMBER
+        WHERE DELYN = 'N'
+        ORDER BY MEMBER DESC
+    </select>
+
+    <select id="getMemberSearchList" resultType="com.itso.market.mobile.model.MEMBER">
+        SELECT *
+        FROM MEMBER
+        WHERE DELYN = 'N'
+            <if test="role != null">
+                AND ROLE = #{role}
+            </if>
+            AND NAME LIKE CONCAT('%',#{keyword},'%')
+        ORDER BY MEMBER DESC
+    </select>
+
+    <select id="getMemberListForPaging" resultType="com.itso.market.mobile.model.MEMBER">
+        SELECT *
+        FROM MEMBER
+        WHERE DELYN = 'N'
+        <if test="role != null">
+            AND ROLE = #{role}
+        </if>
+        <if test="keyword != null">
+            AND NAME LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY MEMBER DESC
+        LIMIT #{startNum}, #{num}
+    </select>
+
+    <select id="getMemberListForPagingCnt" resultType="java.lang.Integer">
+        SELECT COUNT(MEMBER)
+        FROM MEMBER
+        WHERE DELYN = 'N'
+        <if test="role != null">
+            AND ROLE = #{role}
+        </if>
+        <if test="keyword != null">
+            AND NAME LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY MEMBER DESC
+    </select>
+</mapper>

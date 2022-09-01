@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.security.dao.SecurityDao">
+    <select id="getMemberForLogin" resultType="com.itso.market.mobile.model.MEMBER">
+        SELECT
+            *
+        FROM MEMBER
+        WHERE ID = #{id}
+          AND DELYN = 'N'
+    </select>
+</mapper>

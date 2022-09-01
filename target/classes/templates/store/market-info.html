@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/store/market.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf45249452b9fe157c9b01c87080f2be&libraries=services"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+</head>
+<body>
+
+    <script>
+
+        var address = "";
+        var title = "";
+        var desc = "";
+        var shareImg = '';
+        var mid = '';
+        var sid = '';
+        var url;
+        $( document ).ready(function() {
+
+
+            mid = sessionStorage.getItem("mid");
+
+            // // 가게 상세정보 (사용자)
+            sid = getParameterByName('sid');
+
+            //방문자 카운트
+            countUpVisitor(sid);
+
+            storeInfoUser(sid)
+            // 가게 메뉴정보
+            getMenuListUser(sid);
+            // 유저, 가게관리자 체크
+            getLoginInfo();
+            // 리뷰
+            getReviewListUser(sid);
+
+            $(".edit-btn").attr("href", "/store/edit?sid="+ sid);
+
+            // 쿠폰
+            if(mid != ''){
+                getStoreCouponListUser(sid, mid);
+            }
+            else{
+                getStoreCouponListMain(sid);
+            }
+
+            url = $(location).attr('href');
+
+        });
+    </script>
+
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="market-info-container">
+                <div class="close-wrap">
+                    <a href="javascript:window.history.back();"><img src="../resource/image/store/close-icon.png"></a>
+                    <div class="share-container">
+                        <img class="share-btn" src="../resource/image/store/share-icon.png">
+                        <div class="share-wrap">
+                            <img src="../resource/image/store/kakao-icon.png" onclick="javascript:shareKakao()">
+                            <img src="../resource/image/store/facebook-icon.png" onclick="javascript:shareFacebook()">
+                            <img src="../resource/image/store/twitter-icon.png" onclick="javascript:shareTwitter()">
+                        </div>
+                    </div>
+                </div>
+                <!-- Market Img Slide -->
+                <div class="market-slide-container">
+                    <div class="slide-banner-wrap">
+                        <ul class="swiper-wrapper" id="imgList">
+
+                        </ul>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <!-- Market Info Area -->
+                <div class="market-info-wrap">
+                    <div class="info-top">
+                        <p class="category font-small"><span class="mname">시장 이름</span> / <span class="categoryType">카테고리</span></p>
+                        <span class="market-name font-big">가게이름</span>
+                        <span class="is-open">영업중</span>
+                        <span class="is-coupon">쿠폰</span>
+                        <p class="time font-nomal">영업시간 <span class="sthm"></span> ~ <span class="ndhm"></span></p>
+                        <p class="font-nomal">휴무 정보 <span class="holiday"></span></p>
+                        <div class="contact-wrap">
+                            <a class="call-btn"><img src="../resource/image/store/call-icon.png">전화 문의</a>
+                            <a class="kakao" href=""><img src="../resource/image/store/kakao-icon.png">카카오톡 문의</a>
+                        </div>
+                        <a class="coupon-btn"><img src="../resource/image/store/coupon-icon.png"> 쿠폰 받기</a>
+                    </div>
+                    <!-- Tab Menu -->
+                    <div class="tab-wrap">
+                        <ul>
+                            <li class="tab-btn font-nomal active">
+                                매장 소개
+                            </li>
+                            <li class="tab-btn font-nomal">
+                                가격 정보
+                            </li>
+                            <li class="tab-btn font-nomal">
+                                위치보기
+                            </li>
+                            <li class="tab-btn font-nomal">
+                                리뷰
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Tab Content Area -->
+                    <div class="tab-contant-container">
+                        <div class="tab-contant-wrap market-info-text-wrap sinfo">
+                        </div>
+                        <div class="tab-contant-wrap manu-list-wrap" id="menuList">
+                        </div>
+                        <div class="tab-contant-wrap market-location-wrap">
+                            <div class="location-wrap" id="loImg">
+
+                            </div>
+                            <div id="map" style="height: 200px;">
+                            </div>
+                        </div>
+                        <div class="tab-contant-wrap market-rate-wrap">
+                            <a class="write-review" href="javascript:writeReview()">리뷰작성하기</a>
+                            <div class="total-rate-wrap">
+                                <div>
+                                    <p class="tit"><img src="../resource/image/store/rate-icon.png" alt="">평점</p>
+                                    <p class="val total" >0.0</p>
+                                </div>
+                                <div>
+                                    <p class="tit"><img src="../resource/image/store/review-icon.png">리뷰수</p>
+                                    <p class="val review-num">0 (0 new)</p>
+                                </div>
+                            </div>
+                            <div class="review-wrap" id="reviewHtml">
+                                <p class="review-none">등록된 리뷰가 없습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Floating Bottom Menu -->
+            <div class="floating-menu-container">
+                <div class="wrapper">
+                    <div class="menu-item">
+                        <a href="/">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/home-off.png">
+                            </div>
+                            <p class="menu-name">홈</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/user/couponList">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/coupon-off.png">
+                            </div>
+                            <p class="menu-name">쿠폰</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/market/searchMarket">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/search-off.png">
+                            </div>
+                            <p class="menu-name">위치</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/user/mypage">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/mypage-off.png">
+                            </div>
+                            <p class="menu-name">내 정보</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-background"></div>
+            <!-- Call Modal -->
+            <div class="call-modal-container">
+                <p class="title">전화를 연결하시겠습니까?</p>
+                <p class="text"><span class="phone">000-0000-0000</span> 으로 전화 연결하시겠습니까?</p>
+                <div class="confirm-wrap">
+                    <a class="modal-close">취소</a>
+                    <a class="sphone">전화연결</a>
+                </div>
+            </div>
+            <!-- Coupon Modal -->
+            <div class="coupon-modal-container">
+                <p class="title">쿠폰 목록</p>
+                <div class="coupon-list-wrap" id="couponList">
+                   등록된 쿠폰이 없습니다.
+                </div>
+                <div class="confirm-wrap">
+                    <span class="modal-close">취소</span>
+                </div>
+            </div>
+            <div class="coupon-issued-suc">쿠폰 받기가 완료되었습니다.</div>
+
+        </section>
+    </div>
+</body>
+
+<script src="../resource/js/jquery.vticker-min.js"></script>
+
+<script type="text/javascript">
+
+    var link = $(location).attr('href');
+
+    $(function (e) {
+
+
+        // Main Slide Banner
+        var slide = new Swiper('.slide-banner-wrap', {
+                slidesPerView : '1',
+                pagination : {
+                el : '.swiper-pagination',
+                clickable : true,
+            },
+                autoplay: {
+                delay: 2000,
+                disableOnInteraction: true // 쓸어 넘기거나 버튼 클릭 시 자동 슬라이드 정지.
+            },
+            loop: true
+        });
+        $(".tab-btn").click(function(){
+            $(".tab-btn").removeClass('active');
+            $(this).addClass('active');
+            var indexNo = $(this).index();
+            $('.tab-contant-wrap').hide();
+            $('.tab-contant-wrap').eq(indexNo).show();
+
+            if(indexNo == 2){
+                relayout()
+            }
+        });
+
+        $(".call-btn").click(function(event){  //팝업 Open 버튼 클릭 시
+            $(".call-modal-container").css({
+                "top": (($(window).height()-$(".call-modal-container").outerHeight())/2+$(window).scrollTop())+"px",
+                "left": (($(window).width()-$(".call-modal-container").outerWidth())/2+$(window).scrollLeft())+"px"
+                //팝업창을 가운데로 띄우기 위해 현재 화면의 가운데 값과 스크롤 값을 계산하여 팝업창 CSS 설정
+            });
+            $(".modal-background").css("display","block"); //팝업 뒷배경 display block
+            $(".call-modal-container").css("display","block"); //팝업창 display block
+        });
+        $(".coupon-btn").click(function(event){  //팝업 Open 버튼 클릭 시
+            $(".coupon-modal-container").css({
+                "top": (($(window).height()-$(".coupon-modal-container").outerHeight())/2+$(window).scrollTop())+"px",
+                "left": (($(window).width()-$(".coupon-modal-container").outerWidth())/2+$(window).scrollLeft())+"px"
+                //팝업창을 가운데로 띄우기 위해 현재 화면의 가운데 값과 스크롤 값을 계산하여 팝업창 CSS 설정
+            });
+            $(".modal-background").css("display","block"); //팝업 뒷배경 display block
+            $(".coupon-modal-container").css("display","block"); //팝업창 display block
+        });
+
+
+        $(".modal-close").click(function(event){
+            $(".modal-background").css("display","none"); //팝업창 뒷배경 display none
+            $(".call-modal-container").css("display","none"); //팝업창 display none
+            $(".coupon-modal-container").css("display","none"); //팝업창 display none
+
+        });
+        $('.share-btn').click(function(){
+            $( '.share-wrap' ).slideToggle();
+        });
+
+        $(document).on("click", "#sh-link", function(e) {
+            // 링크복사 시 화면 크기 고정
+            $('html').find('meta[name=viewport]').attr('content', 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no');
+            var html = "<input id='clip_target' type='text' value='' style='position:absolute;top:-9999em;'/>";
+            $(this).append(html);
+
+            var input_clip = document.getElementById("clip_target");
+            //현재 url 가져오기
+            var _url = $(location).attr('href');
+            $("#clip_target").val(_url);
+
+            if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+
+                var editable = input_clip.contentEditable;
+                var readOnly = input_clip.readOnly;
+
+                input_clip.contentEditable = true;
+                input_clip.readOnly = false;
+
+                var range = document.createRange();
+                range.selectNodeContents(input_clip);
+
+                var selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                input_clip.setSelectionRange(0, 999999);
+
+                input_clip.contentEditable = editable;
+                input_clip.readOnly = readOnly;
+            } else {
+                input_clip.select();
+            }
+            try {
+                var successful = document.execCommand('copy');
+                input_clip.blur();
+                if (successful) {
+                    alert("URL이 복사 되었습니다.");
+                    // 링크복사 시 화면 크기 고정
+                    $('html').find('meta[name=viewport]').attr('content', 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes');
+                } else {
+                    alert('이 브라우저는 지원하지 않습니다.');
+                }
+            } catch (err) {
+                alert('이 브라우저는 지원하지 않습니다.');
+            }
+        }); //클립보드 복사
+
+
+        function relayout() {
+
+            // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
+            // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다
+            // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
+            map.relayout();
+        }
+
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+        // 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        // 주소로 좌표를 검색합니다
+        geocoder.addressSearch(address ,function(result, status) {
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: coords
+                });
+                relayout();
+
+                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                map.setCenter(coords);
+            }
+        });
+
+    });
+
+    //리뷰 작성 버튼
+    function writeReview(){
+        if(mid == ""){
+            alert('로그인 후 이용 가능합니다.');
+            return false;
+        }
+        else{
+            var sname = $('.market-name').text();
+            $(location).attr('href', '/main/review?sid='+sid+'&mid='+mid+'&sname='+sname);
+        }
+    }
+
+    /* Facebook Share */
+    function shareTwitter() {
+        var sendText = "피움"; // 전달할 텍스트
+        window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + link);
+    }
+    /* Facebook Share */
+    function shareFacebook() {
+       window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
+    }
+     /* KaKao Talk Share */
+     try {
+		  Kakao.init('bf45249452b9fe157c9b01c87080f2be');
+	  	  function shareKakao() {
+	  	    Kakao.Link.sendDefault({
+	  	      objectType: 'feed',
+	  	      content: {
+	  	        title: title,
+	  	        description: desc,
+                imageUrl: shareImg,
+	  	        link: {
+	  	          mobileWebUrl: link,
+	  	          webUrl: link,
+	  	        },
+	  	      },
+	  	      buttons: [
+	  	        {
+	  	          title: '자세히보기',
+	  	          link: {
+	  	            mobileWebUrl: link,
+	  	            webUrl: link,
+	  	          },
+	  	        },
+	  	      ],
+	  	    })
+	  	  }
+	  	; window.kakaoDemoCallback && window.kakaoDemoCallback() }
+	  	catch(e) { window.kakaoDemoException && window.kakaoDemoException(e) }
+
+</script>
+</body>
+</html>
+
+

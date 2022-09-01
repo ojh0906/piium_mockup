@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/market/market.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+
+</head>
+
+<script>
+    var mkid;
+
+    $( document ).ready(function() {
+        mkid = getParameterByName('mkid');
+        getMarketDetail(mkid);
+        getEventSlide();
+
+        // 공지사항 리스트
+        noticeList();
+
+    });
+</script>
+<style>
+    .header-container .head-wrapper{
+        padding: 15px 0 ;
+        text-align: center;
+    }
+    .header-container .head-wrapper img{
+        width:145px;
+    }
+</style>
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/logo.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="notice-wrap">
+                <!-- Notice Rolling List -->
+                <div class="notice-list-wrap">
+                    <ul class="notice-list" id="notice-list">
+
+                    </ul>
+
+                </div>
+            </div>
+            <div class="menu-tab-wrap">
+                <div class="btn-wrap active">
+                    <a class="go-market"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a class="go-event">이벤트</a>
+                </div>
+            </div>
+            <!-- Main Slide Banner -->
+            <div class="slide-banner-wrap">
+                <ul class="swiper-wrapper" id="eventSlide">
+                    <li class="swiper-slide">
+                        <img src="https://via.placeholder.com/420x180">
+                    </li>
+                    <li class="swiper-slide">
+                        <img src="https://via.placeholder.com/420x180">
+                    </li>
+                </ul>
+                <div class="swiper-pagination"></div>
+            </div>
+            <!-- Filter menu -->
+            <div class="filter-menu-wrap">
+                <div class="category-wrap">
+                    <ul class="swiper-wrapper" id="categoryList">
+                    </ul>
+                    <div class="swiper-scrollbar"></div>
+                </div>
+            </div>
+            <div class="market-detail-wrap">
+                <div class="market-info-wrap">
+                    <p class="tit">상세 정보</p>
+                    <p class="market-info-text"></p>
+                    <div class="info-detail">
+                        <div class="item">
+                            <p class="label">문의 및 안내</p>
+                            <p class="val phone"></p>
+                        </div>
+                        <div class="item">
+                            <p class="label">주소</p>
+                            <p class="val address"></p>
+                        </div>
+                        <div class="item">
+                            <p class="label">휴일</p>
+                            <p class="val holiday"></p>
+                        </div>
+                        <div class="item">
+                            <p class="label">홈페이지</p>
+                            <p class="val homepage"></p>
+                        </div>
+                        <div class="item">
+                            <p class="label">이용시간</p>
+                            <p class="val open-time"></p>
+                        </div>
+                        <div class="item">
+                            <p class="label">주차</p>
+                            <p class="val park"></p>
+                        </div>
+                    </div>
+                    <div class="notice-wrap notice-second">
+                        <ul class="notice-list" id="marketNotice">
+                            <li>
+                                <a>
+                                    <div class="item-wrap">
+                                        <div class="tit-wrap">
+                                            공지사항
+                                        </div>
+                                        <div class="date-wrap">
+                                            21.10.10
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <div class="item-wrap">
+                                        <div class="tit-wrap">
+                                            공지사항
+                                        </div>
+                                        <div class="date-wrap">
+                                            21.10.10
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="market-img-wrap" id="imgList">
+                <img src="https://via.placeholder.com/420x160">
+            </div>
+
+
+        </section>
+
+        <!-- Floating Bottom Menu -->
+        <div class="floating-menu-container">
+            <div class="wrapper">
+                <div class="menu-item">
+                    <a href="/">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/home-off.png">
+                        </div>
+                        <p class="menu-name">홈</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/couponList">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/coupon-off.png">
+                        </div>
+                        <p class="menu-name">쿠폰</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/market/searchMarket">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/search-off.png">
+                        </div>
+                        <p class="menu-name">위치</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/mypage">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/mypage-off.png">
+                        </div>
+                        <p class="menu-name">내 정보</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script src="../resource/js/jquery.vticker-min.js"></script>
+
+        <script type="text/javascript">
+            $(function (e) {
+
+                // Notice Rolling List
+                $('.notice-list-wrap').vTicker({showItems: 4, pause: 1500});
+
+
+
+            });
+        </script>
+
+
+    </div>
+</body>
+</html>
+

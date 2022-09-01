@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/market/market.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+<script>
+    var eid;
+    var mid;
+    var keyword;
+    $( document ).ready(function() {
+        keyword = getParameterByName('key');
+
+        // default
+        //getMarketListBySearch(keyword, 0, 36.78384569347095, 126.45479605325816);
+
+        getCurrentLatLon(0);
+
+
+        $('.filter-select').on('change', function() {
+
+            getCurrentLatLon($(this).val());
+        });
+    });
+
+</script>
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+            <div class="body-wrapper">
+                <p>위치 찾기</p>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/back-icon.png"></a>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="search-container">
+                <form action="/market/searchMarket" method="get">
+                    <div class="search-wrap">
+                        <input type="image" src='../resource/image/common/search.png'>
+                        <input type="text" name="key" value="" placeholder="검색어" />
+                    </div>
+                </form>
+            </div>
+            <!-- Recomend Market -->
+            <div class="market-list-wrap">
+                <select class="filter-select">
+                    <option value="0">거리 순</option>
+                    <option value="1">인기 순</option>
+                </select>
+                <div class="list-container category-search-wrap" id="marketList">
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Bottom Menu -->
+        <div class="floating-menu-container">
+            <div class="wrapper">
+                <div class="menu-item">
+                    <a href="/">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/home-off.png">
+                        </div>
+                        <p class="menu-name">홈</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/couponList">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/coupon-off.png">
+                        </div>
+                        <p class="menu-name">쿠폰</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/market/searchMarket">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/search-off.png">
+                        </div>
+                        <p class="menu-name">위치</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/mypage">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/mypage-off.png">
+                        </div>
+                        <p class="menu-name">내 정보</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            //현재 위치 반환
+            function getCurrentLatLon(order) {
+
+                if (navigator.geolocation) {
+
+                    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        console.log(position);
+                        var latVal = position.coords.latitude, // 위도
+                            lonVal = position.coords.longitude; // 경도
+
+                        lat = latVal;
+                        lon = lonVal;
+
+
+                        getMarketListBySearch(keyword, order, lat, lon);
+
+
+                    });
+
+                } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+                }
+            }
+        </script>
+
+
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/market/market.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+<script>
+    var eid;
+    var mid;
+    var keyword = '';
+    $( document ).ready(function() {
+        eid = getParameterByName('eid');
+        mid = getParameterByName('mid');
+        keyword = getParameterByName('keyword');
+
+        getStoreListByCategory(mid, keyword);
+    });
+
+</script>
+
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+            <div class="body-wrapper">
+                <p>위치 찾기</p>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/back-icon.png"></a>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="search-container">
+                <form action="/market/searchCategory" method="get">
+                    <div class="search-wrap">
+                        <input type="image" src='../resource/image/common/search.png'>
+                        <input type="text" name="keyword" value="" placeholder="검색어" />
+                    </div>
+                </form>
+            </div>
+            <!-- Recomend Market -->
+            <div class="market-list-wrap">
+                <div class="list-container" id="storeList">
+                    <div class="list-item">
+                        <div class="top-wrap">
+                            <div class="img-wrap">
+                                <img src="https://via.placeholder.com/98x98">
+                            </div>
+                            <div class="info-wrap">
+                                <p class="market-name">가게 이름</p>
+                                <span class="is-open">영업중</span>
+                                <span class="is-coupon">쿠폰</span>
+                                <p class="rate-text"><img src="../resource/image/manager/rate-icon.png"><span class="rate">4.5</span> (<span class="review">106</span>)</p>
+                                <p class="market-text"><img src="../resource/image/common/location-img.png">도깨비 시장</p>
+                            </div>
+                        </div>
+                        <p class="market-info">가게 설명글이 입력되는 공간입니다.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Floating Bottom Menu -->
+        <div class="floating-menu-container">
+            <div class="wrapper">
+                <div class="menu-item">
+                    <a href="/">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/home-off.png">
+                        </div>
+                        <p class="menu-name">홈</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/couponList">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/coupon-off.png">
+                        </div>
+                        <p class="menu-name">쿠폰</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/market/searchMarket">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/search-off.png">
+                        </div>
+                        <p class="menu-name">위치</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/mypage">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/mypage-off.png">
+                        </div>
+                        <p class="menu-name">내 정보</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="./resource/js/jquery.vticker-min.js"></script>
+
+        <script type="text/javascript">
+            $(function (e) {
+
+            });
+
+
+        </script>
+
+
+    </div>
+</body>
+</html>
+

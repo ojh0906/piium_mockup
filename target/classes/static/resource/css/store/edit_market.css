@@ -1,0 +1,203 @@
+/* Common Css */
+#container{
+    padding:54px 20px 24px;
+    box-sizing: border-box;
+}
+#wrap{
+    padding-bottom: 0;
+}
+.font-big{
+    font-size: 24px;
+    line-height: 28px;
+}
+.font-nomal{
+    font-size: 16px
+}
+.font-small{
+    font-size: 14px;
+}
+.login-from-wrap{
+    width: 100%;
+}
+.input-label{
+    margin-bottom: 15px;
+    margin-top:25px;
+    font-weight:500;
+}
+.small{
+    font-size: 12px;
+    color: #94a4b5;
+    margin-bottom: 15px;
+}
+input[type=text],input[type=password]{
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ADB5BD;
+    padding: 5px 0;
+    font-size: 16px;
+}
+input[type=text]::placeholder,input[type=password]::placeholder{
+    color: #ADB5BD;
+}
+input[type=time]{
+    width: 150px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+}
+input[type=file]{
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+    color: #2c2c2c;
+    height: auto;
+    font-size: 14px;
+    transition: color .3s ease-in-out,border-color .3s ease-in-out,background-color .3s ease-in-out;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+textarea{
+    padding: 15px 15px;
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+    color: #2c2c2c;
+    font-size: 14px;
+    line-height: 22px;
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    height: 200px;
+}
+input[type=checkbox]{
+    width: 15px;
+    height: 15px;
+    vertical-align: text-bottom;
+}
+.checkbox-wrap{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.category-wrap label{
+    width:45%;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+.openday-wrap label{
+    width:25%;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+.controll-wrap{
+    display: flex;
+    margin: 10px 0 20px;
+}  
+.controll-wrap .img-preview{
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+    padding: 10px 18px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 14px;
+    color:#ADB5BD;
+    width: 220px;
+}
+.controll-wrap .img-preview img{
+    display: none;
+    width:100%;
+}
+.controll-wrap .delete-wrap {
+    display: flex;
+    align-items: flex-end;
+    padding-left: 10px;
+}
+.controll-wrap .delete-wrap span{
+    border-radius: 5px;
+    padding: 3px 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    vertical-align: sub;
+    height: 28px;
+    line-height: 20px;
+    cursor: pointer;
+}
+.controll-wrap .delete-wrap .img-del-btn{
+    border: 1px solid #343A40;
+    background-color: #343A40;
+    color: #fff;
+}
+.controll-wrap .delete-wrap .img-location-btn{
+    border: 1px solid #87c1fa;
+    background-color: #fff;
+    margin-left: 10px;
+    color: #2f5780;
+}
+.controll-wrap .delete-wrap .checked{
+    border: 1px solid #87c1fa;
+    background-color: #2f5780;
+    color: #fff;
+}
+
+.img-add-btn{
+    width: 100%;
+    color: #8696a7;
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 600;
+    padding: 10px 0;
+    margin: 20px auto 0;
+    background: #e6e6e6;
+    cursor: pointer;
+}
+.register-submit{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #343A40;
+    color:#fff;
+    font-weight: 600;
+    padding:14px 0;
+    cursor: pointer;
+}
+.mt-long{
+    margin-top:220px;
+}
+.mt-short{
+    margin-top:65px;
+}
+.menu-management{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #343A40;
+    color:#343A40;
+    font-weight: 600;
+    padding:14px 0;
+    cursor: pointer;
+    margin-top: 40px;
+    display: inline-block;
+    font-size: 14px;
+    text-align: center;
+}
+input[type=submit]{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #343A40;
+    color:#fff;
+    font-weight: 600;
+    padding:14px 0;
+    cursor: pointer;
+    margin-top: 40px;
+}

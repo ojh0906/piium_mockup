@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/market/menu-management.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+<body>
+    <script>
+
+        $( document ).ready(function() {
+            // 임시 store key 값 주소 파라미터로 받아서 값 넣어줌
+            var sid = getParameterByName('sid');
+            $(".menu-add").attr("href", "/store/menuEdit?sid="+ sid +"&cmd=1")
+            getMenuListAdm(sid);
+
+        });
+    </script>
+
+    <div id="wrap">
+         <!-- Content Section -->
+         <section id="container">
+            <p class="font-big page-title">메뉴관리</p>
+            <div class="management-list-container">
+
+                <a class="menu-add" href="">메뉴 추가</a>
+                <form >
+                    <div class="management-list-wrap" id="menuList">
+                        <p> <strong>등록된 메뉴가 없습니다.</strong></p>
+                    </div>
+                </form>
+
+
+                <a class="close-btn" href="javascript:window.history.back();">확인</a>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    $(function (e) {
+
+    });
+
+</script>
+</body>
+</html>
+
+

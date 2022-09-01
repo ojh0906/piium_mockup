@@ -1,0 +1,224 @@
+.font-big{
+    font-size: 24px;
+    line-height: 28px;
+}
+.font-nomal{
+    font-size: 16px
+}
+.font-small{
+    font-size: 14px;
+}
+.page-title{
+    padding:54px 20px 0;
+    box-sizing: border-box;
+}
+.management-list-container{
+    width: 100%;
+    padding:0 20px;
+    box-sizing: border-box;
+}
+.management-list-container .menu-add{
+    width: 100px;
+    color: #8696a7;
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 600;
+    padding: 10px 0;
+    margin: 20px auto 0;
+    background: #e6e6e6;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.management-list-wrap{
+    padding: 20px 15px;
+    box-sizing: border-box;
+    border: 1px solid #DEE2E6;
+    overflow-y: scroll;
+    height: calc(80vh - 140px);
+}
+.management-list-wrap .menu-item{
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #DEE2E6;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+}
+.management-list-wrap .menu-item:nth-last-child(1){
+    margin-bottom: 0;
+}
+.management-list-wrap .menu-item .img-wrap{
+    width: 88px;
+}
+.management-list-wrap .menu-item .info-wrap{
+    width:calc(100% - 88px);
+    padding-left: 16px;
+    box-sizing: border-box;
+    position: relative;
+}
+.management-list-wrap .menu-item .info-wrap .menu-name{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.management-list-wrap .menu-item .info-wrap .menu-info{
+    font-size: 14px;
+    margin-bottom: 5px;
+    min-height: 35px;
+    color: #495057;
+    line-height: 20px;
+}
+.management-list-wrap .menu-item .info-wrap .menu-price{
+    font-size:20px;
+    font-weight: 600;
+}
+.management-list-wrap .menu-item .info-wrap .edit-btn{
+    position: absolute;
+    right: 0;
+    top: 10px;
+    display: inline-block;
+    border-radius: 5px;
+    background-color: #343A40;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+.management-list-wrap .menu-item .info-wrap .del-btn{
+    position: absolute;
+    right: 0;
+    top: 55px;
+    display: inline-block;
+    border-radius: 5px;
+    background-color: #F17878;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+.management-list-container .close-btn{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #343A40;
+    color: #fff;
+    font-weight: 600;
+    padding: 14px 0;
+    cursor: pointer;
+    margin-top: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Edit */
+.input-label{
+    margin-bottom: 15px;
+    margin-top:25px;
+    font-weight:500;
+}
+.small{
+    font-size: 12px;
+    color: #94a4b5;
+    margin-bottom: 15px;
+}
+.menu-container{
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+input[type=text], input[type=number]{
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ADB5BD;
+    padding: 5px 0;
+    font-size: 16px;
+}
+input[type=date]{
+    font-size: 14px;
+    padding:10px;
+    box-sizing: border-box;
+    width: 200px;
+}
+input[type=file]{
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+    color: #2c2c2c;
+    height: auto;
+    font-size: 14px;
+    transition: color .3s ease-in-out,border-color .3s ease-in-out,background-color .3s ease-in-out;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+textarea{
+    padding: 15px 15px;
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+    color: #2c2c2c;
+    font-size: 14px;
+    line-height: 22px;
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    height: 200px;
+}
+.price-wrap{
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+}
+.price-wrap input{
+    max-width: 200px;
+}
+.controll-wrap{
+    display: flex;
+    margin: 10px 0 20px;
+}  
+.controll-wrap .img-preview{
+    border: 1px solid #ADB5BD;
+    border-radius: 5px;
+    padding: 10px 18px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 14px;
+    color:#ADB5BD;
+    width: 220px;
+}
+.controll-wrap .img-preview img{
+    display: none;
+    width:100%;
+}
+.btn-wrap{
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+}
+.btn-wrap .submit{
+    display: inline-block;
+    border-radius: 5px;
+    background-color: #343A40;
+    color: #fff;
+    font-weight: 600;
+    padding: 9px 35px;
+    font-size: 14px;
+    outline: none;
+    border: none;
+    margin-right:10px
+}
+.btn-wrap .cancel{
+    display: inline-block;
+    border-radius: 5px;
+    background-color: #F17878;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 35px;
+    font-size: 14px;
+    margin-left:10px
+}

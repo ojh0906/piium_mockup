@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/manager/manager.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+
+<script>
+    var sid;
+    var mid;
+    $( document ).ready(function() {
+        sid = getParameterByName('sid');
+        mid = getParameterByName('mid');
+        managerUrl(sid);
+        productInfoManager(mid);
+
+        $(".go-edit").attr("href", "/manager/editProduct?mid="+mid + '&cmd=2');
+    });
+
+</script>
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="manager-full-body" style="padding: 0px 0px 0;">
+                <div class="product-img-wrap">
+                    <a href="javascript:window.history.back();"><img src="../resource/image/manager/close-icon.png"></a>
+                    <img class="product-img"  src="https://via.placeholder.com/420x240">
+                </div>
+                <div class="product-info-wrap">
+                    <p class="category">과일</p>
+                    <p class="mname">상품 이름</p>
+                    <p class="mprice">상품 가격</p>
+                    <P class="minfo">상품 설명을 입력해주세요. 상품 설명을 입력해주세요. 상품 설명을 입력해주세요.</P>
+                    <a class="go-edit" href="#"><img src="../resource/image/manager/edit-icon.png">수정</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+</script>
+
+</script>
+</body>
+</html>
+

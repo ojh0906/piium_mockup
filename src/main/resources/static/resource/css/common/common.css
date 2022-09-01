@@ -1,0 +1,73 @@
+/* 모든 페이지 공통 */
+body {
+    background: rgb(51, 51, 51);
+}
+#wrap {
+    background-color: #ffffff;
+    position: relative;
+    margin: 0 auto;
+    min-height:100vh;
+    height: 100%;
+    max-width: 420px;
+    padding-bottom: 61px;
+    box-sizing: border-box;
+}
+
+/* Header */
+.header-container{
+    width: 100%;
+}
+.header-container .head-wrapper{
+    text-align: right;
+    padding: 7px 8px;
+}
+.header-container .body-wrapper{
+    text-align: center;
+    padding:16px;
+    box-sizing: border-box;
+    width: 100%;
+}
+.header-container .body-wrapper .page-title{
+    font-size: 16px;
+    font-weight: bold;
+}
+.header-container .body-wrapper .locate{
+    float: right;
+}
+/* Footer */
+
+
+
+/* Floating Menu */
+.floating-menu-container{
+    position: fixed;
+    box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.06);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    width: 100%;
+    max-width: 420px;
+    padding: 10px 0 8px;
+    z-index: 10000;
+}
+.floating-menu-container .wrapper{
+    display: flex;
+    width: 100%;
+}
+.floating-menu-container .wrapper .menu-item{
+    width: 25%;
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
+}
+.floating-menu-container .wrapper .menu-item .icon-wrap img{
+    height: 24px;
+    width: 24px;
+}
+.floating-menu-container .wrapper .active{
+    font-weight: 700;
+}
+.floating-menu-container .wrapper .menu-item:hover{
+    font-weight: bold;
+}

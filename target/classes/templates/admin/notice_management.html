@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/admin.js"></script>
+
+</head>
+<body>
+
+    <script>
+
+        $( document ).ready(function() {
+            noticeList();
+        });
+    </script>
+
+    <div id="wrap">
+        <div class="gnb-container">
+            <p class="site-name">피움 <span class="logout" onclick="fnLogout()"><i class="fas fa-sign-out-alt"></i></span></p>
+            <div class="gnb-wrap">
+                <div class="menu-item">
+                    <a class="member-menu" href="/admin/memberManage"><i class="far fa-user"></i>회원 관리</a>
+                </div>
+                <div class="menu-item" >
+                    <a class="market-menu" href="/admin/marketManage"><i class="fas fa-store"></i>시장 관리</a>
+                </div>
+                <div class="menu-item " >
+                    <a class="market-menu" href="/admin/storeManage"><i class="fas fa-store"></i>가게 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/eventManage"><i class="fas fa-star"></i>이벤트 관리</a>
+                </div>
+                <div class="menu-item active">
+                    <a class="market-menu" href="/admin/noticeManage"><i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="market-menu" href="/admin/categoryManage"><i class="fas fa-book-open"></i>카테고리 관리</a>
+                </div>
+                <div class="menu-item">
+                    <a class="site-menu" href="/admin/siteManage"><i class="fas fa-list-ul"></i>사이트 관리</a>
+                </div>
+            </div>
+        </div>
+         <!-- Content Section -->
+         <section id="container">
+            <p class="page-name">공지사항 관리</p>
+            <div class="list-container">
+                <div class="search-wrap">
+                    <form>
+                        <input type="text" placeholder="검색하실 제목을 입력해주세요."/>
+                        <input type="submit" value="검색" />
+                    </form>
+                </div>
+                <div class="list-wrap">
+                    <form name="notice-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+                        <div class="list-header">
+                            <span class="total">Total. <strong class="totalNum"></strong></span>
+                            <input type="submit" class="del-btn" value="삭제">
+                        </div>
+                        <table class="member-table">
+                            <thead>
+                                <th style="width:10%">
+                                </th>
+                                <th style="width:15%">
+                                    번호
+                                </th>
+                                <th style="width:50%">
+                                    제목
+                                </th>
+                                <th style="width:25%">
+                                    작성일
+                                </th>
+                            </thead>
+                            <tbody id="noticeList">
+                                <td colspan="4">
+                                    등록한 게시글이 없습니다.
+                                </td>
+                            </tbody>
+                        </table>
+                        <div class="write-wrap">
+                            <a href="/admin/noticeEdit?cmd=1">글작성</a>
+                        </div>
+                        <!-- <div class="paging-wrap">
+                            <ul>
+                                <li>
+                                    <a href="#">&#60;</a>
+                                </li>
+                                <li>
+                                    <a href="#">1</a>
+                                </li>
+                                <li>
+                                    <a href="#">2</a>
+                                </li>
+                                <li>
+                                    <a href="#">3</a>
+                                </li>
+                                <li>
+                                    <a href="#">4</a>
+                                </li>
+                                <li>
+                                    <a href="#">5</a>
+                                </li>
+                                <li>
+                                    <a href="#">&#62;</a>
+                                </li>
+                            </ul>
+                        </div> -->
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+    //Form Validation
+    function checkForm() {
+        var selectedCheck = new Array();
+        $('.delChk:checked').each(function() {
+            selectedCheck.push(this.value);
+        });
+        if(selectedCheck.length < 1 ){
+            alert('최소한 1개 이상 항목을 선택하셔야 합니다');
+            return false;
+        }
+
+        var formJson = {};
+
+        var con = confirm("선택하신 공지사항을 삭제하시겠습니까?");
+
+        if(con){
+
+            var chk_arr = $("input[name='chk[]']");
+
+            for( var i=0; i<chk_arr.length; i++ ) {
+                if( chk_arr[i].checked == true ) {
+
+                    var data = {notice : chk_arr[i].value};
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-HTTP-Method-Override": "POST"
+                        },
+                        url: ServerUrl+"/admin/deleteNotice",
+                        data: JSON.stringify(data),
+                        success: function(result) {
+                            console.log(result);
+                        },
+                        error: function(result) {
+                            console.log(result);
+                        }
+                    });
+                }
+            }
+            alert('삭제되었습니다.');
+            window.location.reload()
+
+        }else{
+            return;
+        }
+    }
+</script>
+</body>
+</html>
+
+

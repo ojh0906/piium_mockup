@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/event/event.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+<script>
+    var eid;
+    var mid;
+    var url;
+
+    $( document ).ready(function() {
+        eid = getParameterByName('eid');
+        getEvent(eid);
+        mid = sessionStorage.getItem("mid");
+        url = $(location).attr('href');
+
+        $('.join-btn').click(function (){
+
+            if(mid == ""){
+                alert('로그인 후 이용 가능합니다.');
+                return false;
+            }
+            else{
+                registerEvent(eid, mid);
+            }
+        });
+    });
+</script>
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="event-header">
+                <p>이벤트</p>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/back-icon.png"></a>
+            </div>
+            <div class="event-body">
+                <div class="event-detail-wrap">
+                    <div class="detail-head">
+                        <p class="tit">이벤트 이름</p>
+                        <p class="market-name"><span class="mname">시장 이름</span></p>
+                        <p class="date"> <span class="stdate">2021.09.08</span> ~ <span class="nddate">2021.11.02</span></p>
+                        <span class="share-btn">
+                            <img src="../resource/image/event/share-icon.png">
+                            <div class="share-container">
+                                <div class="share-wrap">
+                                    <img src="../resource/image/store/kakao-icon.png" onclick="javascript:shareKakao()">
+                                    <img src="../resource/image/store/facebook-icon.png" onclick="javascript:shareFacebook()">
+                                    <img src="../resource/image/store/twitter-icon.png" onclick="javascript:shareTwitter()">
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="detail-body">
+                        <div class="content" style="padding: 20px 0; min-height: 200px;">
+
+                        </div>
+                        <a class="join-btn">이벤트 참여</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Floating Bottom Menu -->
+            <div class="floating-menu-container">
+                <div class="wrapper">
+                    <div class="menu-item">
+                        <a href="/">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/home-off.png">
+                            </div>
+                            <p class="menu-name">홈</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/user/couponList">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/coupon-off.png">
+                            </div>
+                            <p class="menu-name">쿠폰</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/market/searchMarket">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/search-off.png">
+                            </div>
+                            <p class="menu-name">위치</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/user/mypage">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/mypage-off.png">
+                            </div>
+                            <p class="menu-name">내 정보</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+        $('.share-btn').click(function(){
+            $( '.share-wrap' ).slideToggle();
+        });
+    });
+
+
+</script>
+</body>
+</html>
+

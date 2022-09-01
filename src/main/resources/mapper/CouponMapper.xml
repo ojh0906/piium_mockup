@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.mobile.dao.CouponDao">
+    <select id="getCoupon" resultType="com.itso.market.mobile.model.COUPON">
+        SELECT *
+        FROM COUPON
+        WHERE COUPON = #{coupon}
+    </select>
+
+    <insert id="insertCoupon">
+        INSERT INTO COUPON
+            (STORE, CTYPE, CNAME, STANPRICE, DISPRICE, CINFO, BGNDT, NDDT, REGID, CHNID)
+        VALUES
+            (#{store}, #{ctype}, #{cname}, #{stanprice}, #{disprice}, #{cinfo}, #{bgndt}, #{nddt}, #{regId}, #{chnId})
+    </insert>
+
+    <update id="updateCoupon">
+        UPDATE COUPON SET
+            CTYPE = #{ctype},
+            CNAME = #{cname},
+            STANPRICE = #{stanprice},
+            DISPRICE = #{disprice},
+            CINFO = #{cinfo},
+            BGNDT = #{bgndt},
+            NDDT = #{nddt},
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE COUPON = #{coupon}
+    </update>
+
+    <update id="deleteCoupon">
+        UPDATE COUPON SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE COUPON = #{coupon}
+    </update>
+
+    <select id="getCouponListInStore" resultType="com.itso.market.mobile.model.COUPON">
+        SELECT *
+        FROM COUPON
+        WHERE STORE = #{store}
+            AND DELYN = 'N'
+    </select>
+
+    <select id="getCouponListAtStore" resultType="com.itso.market.mobile.model.COUPON">
+        SELECT C.*, M.CNO, M.USEYN
+        FROM COUPON C
+            LEFT JOIN MCOUPON M ON C.COUPON = M.COUPON AND M.MEMBER = #{member}
+        WHERE C.STORE = #{store}
+        AND C.DELYN = 'N'
+    </select>
+
+    <insert id="issuedCoupon">
+        INSERT INTO MCOUPON
+            (MEMBER, COUPON, CNO, REGID, CHNID)
+        VALUES
+            (#{member}, #{coupon}, #{cno}, #{regId}, #{chnId})
+    </insert>
+
+    <select id="getCouponListInMember" resultType="com.itso.market.mobile.model.COUPON">
+        SELECT C.*, M.MCOUPON, M.CNO, M.USEYN
+        FROM COUPON C
+            LEFT JOIN MCOUPON M ON C.COUPON = M.COUPON
+        WHERE M.MEMBER = #{member}
+            AND M.DELYN = 'N'
+    </select>
+
+    <select id="getCouponForUser" resultType="com.itso.market.mobile.model.COUPON">
+        SELECT C.*, M.MCOUPON, M.CNO, M.USEYN
+        FROM COUPON C
+            LEFT JOIN MCOUPON M ON C.COUPON = M.COUPON
+        WHERE C.COUPON = #{coupon}
+            AND M.MEMBER = #{member}
+            AND M.DELYN = 'N'
+    </select>
+
+    <update id="useCoupon">
+        UPDATE MCOUPON SET
+            USEYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MCOUPON = #{mcoupon}
+    </update>
+
+    <update id="deleteMCoupon">
+        UPDATE MCOUPON SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MCOUPON = #{mcoupon}
+    </update>
+</mapper>

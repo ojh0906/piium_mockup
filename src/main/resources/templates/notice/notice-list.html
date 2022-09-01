@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/notice/notice.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+</head>
+
+    <script>
+
+        $( document ).ready(function() {
+            noticeList()
+        });
+    </script>
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+         <!-- Content Section -->
+        <section id="container">
+            <div class="notice-header">
+                <p>공지사항</p>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/back-icon.png"></a>
+            </div>
+            <div class="notice-body">
+                <div class="notice-list-wrap" id="notice-list">
+                   <p>등록된 게시글이 없습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Bottom Menu -->
+        <div class="floating-menu-container">
+            <div class="wrapper">
+                <div class="menu-item">
+                    <a href="/">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/home-off.png">
+                        </div>
+                        <p class="menu-name">홈</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/couponList">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/coupon-off.png">
+                        </div>
+                        <p class="menu-name">쿠폰</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/market/searchMarket">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/search-off.png">
+                        </div>
+                        <p class="menu-name">위치</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/mypage">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/mypage-off.png">
+                        </div>
+                        <p class="menu-name">내 정보</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+</script>
+</body>
+</html>
+
+

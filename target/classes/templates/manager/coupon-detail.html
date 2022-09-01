@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/manager/manager.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+
+<script>
+    var sid;
+    var cid;
+    $( document ).ready(function() {
+        sid = getParameterByName('sid');
+        cid = getParameterByName('cid');
+        managerUrl(sid);
+        getCouponDetail(cid);
+        $('.go-modiify').attr('href','/manager/editCoupon?cmd=2&sid='+sid+'&cid='+cid);
+
+    });
+
+</script>
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="manager-header">
+                <p>쿠폰 정보</p>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/back-icon.png"></a>
+            </div>
+            <div class="manager-body">
+                <div class="coupon-detail-wrap">
+                    <p class="label">쿠폰 이름</p>
+                    <p class="val cname"></p>
+                    <p class="label">쿠폰 종류</p>
+                    <p class="val ctype"></p>
+                    <p class="label">쿠폰 기간</p>
+                    <p class="val"><span class="bgndt">2021.10.10</span> ~ <span class="nddt">2021.10.10</span></p>
+                    <p class="label">쿠폰 설정</p>
+                    <p class="val disprice"></p>
+                    <p class="label">쿠폰 설명</p>
+                    <p class="val cinfo">할인</p>
+
+                    <a class="go-btn go-modiify">쿠폰 수정하기</a>
+                    <a class="go-btn del" onclick="javascript:checkForm()">쿠폰 삭제하기</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    //Form Validation
+    function checkForm() {
+
+        var formJson = {};
+
+        var con = confirm("쿠폰을 삭제하시겠습니까?");
+
+        if(con){
+
+
+            var data = {coupon : cid};
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                url: ServerUrl+"/manager/deleteCoupon",
+                data: JSON.stringify(data),
+                success: function(result) {
+                    console.log(result);
+                },
+                error: function(result) {
+                    console.log(result);
+                }
+            });
+
+
+            alert('삭제되었습니다.');
+            window.location.replace('/manager/couponList?sid='+sid);
+
+        }else{
+            return;
+        }
+    }
+
+</script>
+
+</script>
+</body>
+</html>
+

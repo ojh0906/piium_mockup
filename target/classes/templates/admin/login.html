@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/admin/login.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+
+</head>
+<body>
+    <div id="wrap">
+
+         <!-- Content Section -->
+         <section id="container">
+            <p class="login-title">Staff Only</p>
+            <form action="/login" name="login-form" type="post" method="post">
+                <div class="login-form">
+                    <p class="input-label">아이디</p>
+                    <input type="text" name="username" placeholder="Staff ID" />
+                    <p class="input-label">비밀번호</p>
+                    <input type="password" name="password" placeholder="Staff PW" />
+                    <input class="login-btn" type="submit" value="로그인" />
+                </div>
+            </form>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+</script>
+</body>
+</html>
+
+

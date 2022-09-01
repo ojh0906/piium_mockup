@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/event/event.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+
+</head>
+
+<script>
+    var mkid;
+
+    $( document ).ready(function() {
+        mkid = getParameterByName('mkid');
+        getEventList(mkid, 0);
+        getEventMarket(mkid);
+
+        // 공지사항 리스트
+        noticeList();
+        getEventSlide();
+
+        $('.filter-select').on('change', function() {
+
+            getEventList(mkid, $(this).val());
+        });
+
+    });
+
+
+</script>
+
+<style>
+    .header-container .head-wrapper{
+        padding: 15px 0;
+        text-align: center;
+    }
+    .header-container .head-wrapper img{
+        width:145px;
+    }
+</style>
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/logo.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="notice-wrap">
+                <!-- Notice Rolling List -->
+                <div class="notice-list-wrap">
+                    <ul class="notice-list" id="noticeList">
+                    </ul>
+
+                </div>
+            </div>
+            <div class="menu-tab-wrap">
+<!--                <div class="btn-wrap">-->
+<!--                    <a class="go-market market-name"></a>-->
+<!--                </div>-->
+                <div class="btn-wrap active" style="width: 100%">
+                    <a class="go-event">이벤트</a>
+                </div>
+            </div>
+            <!-- Main Slide Banner -->
+<!--            <div class="slide-banner-wrap">-->
+<!--                <ul class="swiper-wrapper">-->
+<!--                </ul>-->
+<!--                <div class="swiper-pagination"></div>-->
+<!--            </div>-->
+            <!-- Filter menu -->
+<!--            <div class="filter-menu-wrap">-->
+<!--                <div class="category-wrap">-->
+<!--                    <ul class="swiper-wrapper" id="categoryList">-->
+
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+            <!-- 진행중인 이벤트 -->
+            <div class="event-container">
+                <p class="event-tit">이벤트 </p>
+               <select class="filter-select">
+                   <option value="0">마감일 순</option>
+                   <option value="1">등록일 순</option>
+               </select>
+                <img src="../resource/image/common/banner.png" style="margin-top: 20px; width: 100%">
+
+                <div class="event-wrap" style="display: block !important;">
+                </div>
+            </div>
+
+
+        </section>
+
+        <!-- Floating Bottom Menu -->
+        <div class="floating-menu-container">
+            <div class="wrapper">
+                <div class="menu-item">
+                    <a href="/">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/home-off.png">
+                        </div>
+                        <p class="menu-name">홈</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/couponList">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/coupon-off.png">
+                        </div>
+                        <p class="menu-name">쿠폰</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/market/searchMarket">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/search-off.png">
+                        </div>
+                        <p class="menu-name">위치</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/mypage">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/mypage-off.png">
+                        </div>
+                        <p class="menu-name">내 정보</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="../resource/js/jquery.vticker-min.js"></script>
+
+        <script type="text/javascript">
+            $(function (e) {
+
+                // Notice Rolling List
+                $('.notice-list-wrap').vTicker({showItems: 4, pause: 1500});
+
+
+
+            });
+        </script>
+
+
+    </div>
+</body>
+</html>
+

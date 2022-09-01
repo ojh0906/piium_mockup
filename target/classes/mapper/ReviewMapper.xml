@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.mobile.dao.ReviewDao">
+    <select id="getReview" resultType="com.itso.market.mobile.model.REVIEW">
+        SELECT
+            R.*, M.ID, M.NAME
+        FROM REVIEW R
+            JOIN MEMBER M ON R.MEMBER = M.MEMBER
+        WHERE R.REVIEW = #{review}
+            AND R.DELYN = 'N'
+    </select>
+
+    <insert id="insertReview">
+        INSERT INTO REVIEW
+          (STORE, MEMBER, RATE, CONTENTS, REGID, CHNID)
+        VALUES
+          (#{store}, #{member}, #{rate}, #{contents}, #{regId}, #{chnId})
+    </insert>
+
+    <update id="updateReview">
+        UPDATE REVIEW SET
+            RATE = #{rate},
+            CONTENTS = #{contents},
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE REVIEW = #{review}
+    </update>
+
+    <update id="deleteReview">
+        UPDATE REVIEW SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE REVIEW = #{review}
+    </update>
+
+    <select id="getReviewListByStore" resultType="com.itso.market.mobile.model.REVIEW">
+        SELECT
+            R.*, M.ID, M.NAME
+        FROM REVIEW R
+            JOIN MEMBER M ON R.MEMBER = M.MEMBER
+        WHERE R.STORE = #{store}
+            AND R.DELYN = 'N'
+    </select>
+</mapper>

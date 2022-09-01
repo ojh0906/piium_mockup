@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itso.market.mobile.dao.MenuDao">
+    <select id="getMenu" resultType="com.itso.market.mobile.model.MENU">
+        SELECT *
+        FROM MENU
+        WHERE MENU = #{menu}
+            AND DELYN = 'N'
+    </select>
+
+    <insert id="insertMenu" parameterType="com.itso.market.mobile.model.MENU" useGeneratedKeys="true" keyProperty="menu">
+        INSERT INTO MENU
+          (STORE, MNAME, MINFO, PRICEDT, PRICE, REGID, CHNID)
+        VALUES
+          (#{store}, #{mname}, #{minfo}, #{pricedt}, #{price}, #{regId}, #{chnId})
+    </insert>
+
+    <update id="updateMenu">
+        UPDATE MENU SET
+            MNAME = #{mname},
+            MINFO = #{minfo},
+            PRICEDT = #{pricedt},
+            PRICE = #{price},
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MENU = #{menu}
+    </update>
+
+    <update id="deleteMenu">
+        UPDATE MENU SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MENU = #{menu}
+    </update>
+
+    <select id="getMenuListByStore" resultType="com.itso.market.mobile.model.MENU">
+        SELECT *
+        FROM MENU
+        WHERE STORE = #{store}
+            AND DELYN = 'N'
+    </select>
+
+    <select id="getFilesInMenu" resultType="com.itso.market.mobile.model.FILE">
+        SELECT * FROM MFILE
+        WHERE MENU = #{menu}
+        AND DELYN = 'N'
+    </select>
+
+    <insert id="insertFilesInMenu" parameterType="java.util.List">
+        INSERT INTO MFILE
+        (
+            MENU, NAME, UUID, PATH, REGID, CHNID
+        )
+        VALUES
+        <foreach collection="files" item="file" separator=",">
+            (
+            #{file.menu},
+            #{file.name},
+            #{file.uuid},
+            #{file.path},
+            #{file.regId},
+            #{file.chnId}
+            )
+        </foreach>
+    </insert>
+
+    <update id="deleteFilesInMenu">
+        UPDATE MFILE SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MENU = #{menu}
+    </update>
+
+    <update id="deleteFileInMenu">
+        UPDATE MFILE SET
+            DELYN = 'Y',
+            CHNDATE = NOW(),
+            CHNID = #{chnId}
+        WHERE MFILE = #{mfile}
+    </update>
+</mapper>

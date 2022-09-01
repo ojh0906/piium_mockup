@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/login/login.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+
+</head>
+<body>
+
+<script>
+    var mid;
+    $( document ).ready(function() {
+        mid = sessionStorage.getItem("mid");
+        getUserDetail(mid);
+    });
+</script>
+
+
+    <div id="wrap" style="padding-bottom: 61px !important;">
+
+         <!-- Content Section -->
+         <section id="container">
+            <p class="font-big login-title"><strong>마이페이지</strong></p>
+            <div class="register-form-wrap">
+                <form name="mypage-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+                    <input type="hidden" name="member" id="member" value="" />
+                    <div class="input-wrap">
+                        <input type="hidden" class="idCheck" value="0" />
+                        <p class="font-nomal input-label">아이디 </p>
+                        <div class="input-wrap">
+                            <input type="text" name="id" class="id" placeholder="아이디를 입력해주세요." readonly/>
+                        </div>
+                    </div>
+                    <!-- <div class="input-wrap">
+                        <p class="font-nomal input-label">비밀번호 *</p>
+                        <input type="password" id="pw1" name="pw" placeholder="비밀번호를 입력해주세요" />
+                    </div>
+                    <div class="input-wrap">
+                        <input type="hidden" class="pwCheck" value="0" />
+                        <p class="font-nomal input-label">비밀번호 재입력*<span class="sub-text pw-success">비밀번호가 일치합니다.</span> <span class="sub-text pw-fail">비밀번호가 일치하지 않습니다.</span></p>
+                        <input type="password" id="pw2" placeholder="비밀번호를 한번 더 입력해주세요" />
+                    </div> -->
+                    <div class="input-wrap">
+                        <p class="font-nomal input-label">이름</p>
+                        <input type="text" name="name" class="name" placeholder="이름을 입력해주세요." />
+                    </div>
+                    <div class="input-wrap">
+                        <p class="font-nomal input-label">전화번호</p>
+                        <input type="text" name="phone" class="phone" placeholder="전화번호를 입력해주세요" />
+                    </div>
+                    <div class="input-wrap">
+                        <p class="font-nomal input-label">이메일</p>
+                        <input type="text" name="email" class="email" placeholder="이메일을 입력해주세요." />
+                    </div>
+                    <div class="input-wrap">
+                        <p class="font-nomal input-label ">주소</p>
+                        <div class="btn-input-container">
+                            <div class="btn-input-wrap">
+                                <input type="text" name="address" id="address" class="address" placeholder="주소를 입력해주세요." readonly/>
+                            </div>
+                            <div class="inquiry-wrap">
+                                <a class="inquiry-btn address-search">주소 검색</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input class="register-submit mt-short" type="submit" value="수정"/>
+
+                </form>
+
+            </div>
+        </section>
+
+         <!-- Floating Bottom Menu -->
+         <div class="floating-menu-container">
+            <div class="wrapper">
+                <div class="menu-item">
+                    <a href="/">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/home.png">
+                        </div>
+                       <p class="menu-name">홈</p>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="/user/couponList">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/coupon.png">
+                        </div>
+                        <p class="menu-name">쿠폰</p>
+                     </a>
+                </div>
+                <div class="menu-item active">
+                    <a href="/user/mypage">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/mypage-active.png">
+                        </div>
+                        <p class="menu-name">내 정보</p>
+                     </a>
+                </div>
+                <div class="menu-item">
+                    <a href="javascript:window.history.back();">
+                        <div class="icon-wrap">
+                            <img src="../resource/image/common/go-back.png">
+                        </div>
+                        <p class="menu-name">이전</p>
+                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+        // 비밀 번호 재입력 일치 체크
+        $("#pw2").on("change keyup paste", function() {
+            var pwd1 = $("#pw1").val();
+            var pwd2 = $("#pw2").val();
+            if(pwd1 != "" || pwd2 != ""){
+                if(pwd1 == pwd2){
+                    $(".pw-success").show();
+                    $(".pw-fail").hide();
+                    $('.pwCheck').val(1);
+                }else{
+                    $(".pw-success").hide();
+                    $(".pw-fail").show();
+                    $('.pwCheck').val(0);
+                }
+            }
+        });
+
+        // 다음 주소검색 API
+        $('.address-search').click(function(){
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    document.getElementById("address").value = data.address; // 주소 넣기
+                }
+            }).open();
+
+        });
+    });
+
+    //Form Validation
+    function checkForm() {
+        var pw = $("input[name=pw]").val();
+        var pwCheck = $('.pwCheck').val();
+        var name = $("input[name=name]").val();
+        var phone = $("input[name=phone]").val();
+        var address = $("input[name=address]").val();
+
+
+        // if(pw == ""){
+        //     alert("비밀번호를 입력해주세요.");
+        //     $("input[name=userpw]").focus();
+        //     return false;
+        // }
+        // else if(pwCheck == 0){
+        //     alert("비밀번호가 일치하지 않습니다.");
+        //     $("#pw2").focus();
+        //     return false;
+        // }
+        if(phone == ""){
+            alert("전화번호를 입력해주세요.");
+            $("input[name=phone]").focus();
+            return false;
+        }
+        else if(address == ""){
+            alert("전화번호를 입력해주세요.");
+            $("input[name=address]").focus();
+            return false;
+        }
+        var formJson = {};
+
+        $.map($("form[name=mypage-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/user/modifyMember",
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert("수정되었습니다.");
+                }
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+        function test(){
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                url: "http://13.125.114.252/main/getNoticeList",
+                data: "",
+                success: function(result) {
+                    console.log(result);
+                },
+                error: function(result) {
+                    console.log(result);
+                }
+            });
+        }
+
+        function saveImage(){
+            var data = new FormData(document.getElementById('fileForm'));
+
+            $.ajax({
+                url: "http://localhost/file/upload",
+                processData: false,  // file전송시 필수
+                contentType: false,  // file전송시 필수
+                data: data,
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                }
+            });
+        };
+
+    </script>
+</head>
+<body>
+    <h1>Login Role</h1>
+    <a href="/logout">LOGOUT</a>
+
+    <form id="fileForm" method="POST" enctype="multipart/form-data">
+        <p><input type="file" name="file1" id="file1"/></p>
+        <p><input type="file" name="file2" id="file2"/></p>
+    </form>
+    <input type="button" id="saveBtn" value="SAVE" onclick="saveImage()">
+
+</body>
+</html>

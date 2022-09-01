@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/mypage/mypage.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+
+<script>
+    var mid;
+    $( document ).ready(function() {
+        mid = sessionStorage.getItem("mid");
+        getUser(mid);
+    });
+
+</script>
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="mypage-header">
+                <p>마이페이지</p>
+            </div>
+            <div class="mypage-body">
+                <div class="info-wrap">
+                    <div class="label-wrap">
+                        <p>아이디</p>
+                    </div>
+                    <div class="val-wrap">
+                        <p class="userId"></p>
+                    </div>
+                </div>
+                <div class="info-wrap">
+                    <div class="label-wrap">
+                        <p>이름</p>
+                    </div>
+                    <div class="val-wrap">
+                        <p class="name"></p>
+                    </div>
+                </div>
+                <div class="info-wrap">
+                    <div class="label-wrap">
+                        <p>연락처</p>
+                    </div>
+                    <div class="val-wrap">
+                        <p class="phone"></p>
+                    </div>
+                </div>
+                <div class="info-wrap">
+                    <div class="label-wrap">
+                        <p>주소</p>
+                    </div>
+                    <div class="val-wrap">
+                        <p class="address"></p>
+                    </div>
+                </div>
+                <div class="setting-wrap">
+                    <p style="margin-bottom: 30px;"><a class="edit-user" href="/mypage/modifyUser">정보 수정</a></p>
+                    <p>
+                        <a class="logout" href="javascript:fnLogout()">로그아웃</a>
+                        <a style="font-size: 16px;float: right;font-weight: 700;">회원탈퇴</a>
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Floating Bottom Menu -->
+            <div class="floating-menu-container">
+                <div class="wrapper">
+                    <div class="menu-item">
+                        <a href="/">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/home-off.png">
+                            </div>
+                            <p class="menu-name">홈</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/user/couponList">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/coupon-off.png">
+                            </div>
+                            <p class="menu-name">쿠폰</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/market/searchMarket">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/search-off.png">
+                            </div>
+                            <p class="menu-name">위치</p>
+                        </a>
+                    </div>
+                    <div class="menu-item active">
+                        <a href="/user/mypage">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/common/mypage-on.png">
+                            </div>
+                            <p class="menu-name">내 정보</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+</script>
+
+</script>
+</body>
+</html>
+

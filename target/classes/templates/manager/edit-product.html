@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/manager/manager.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+
+<script>
+    var sid;
+    var mid;
+    var cmd;
+    $( document ).ready(function() {
+        sid = getParameterByName('sid');
+        mid = getParameterByName('mid');
+        cmd = getParameterByName('cmd');
+        managerUrl(sid);
+
+        if(cmd == 1){
+            formChg = '/manager/saveProduct';
+            msg = '등록되었습니다.';
+            $('#menu').remove();
+            $('#store').val(sid);
+        }
+        else if(cmd == 2){
+            formChg = '/manager/modifyProduct';
+            msg = '수정되었습니다.';
+            productEditInfoAdm(mid);
+            $('input[type=submit]').val('상품 수정하기');
+            $('#store').remove();
+        }
+
+
+    });
+
+</script>
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <form name="menu-form" id="menu-form" type="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); return saveImage();">
+                <input type="hidden" name="menu" id="menu" />
+                <input type="hidden" name="store" id="store" />
+                <div class="manager-header">
+                    <p>상품 수정</p>
+                    <a href="javascript:window.history.back();"><img src="../resource/image/manager/close-btn.png"></a>
+                </div>
+                <div class="manager-body">
+
+                    <p class="input-label">상품 이름*</p>
+                    <input type="text" class="input-full" name="mname" placeholder="상품 이름" required/>
+                    <p class="input-label">상품 설명*</p>
+                    <input type="text" class="input-full" name="minfo" placeholder="상품 설명을 입력해주세요." required/>
+                    <p class="input-label">상품 가격*</p>
+                    <input type="text" class="input-num" name="price" placeholder="" required/>  원
+                    <p class="input-label">상품 이미지</p>
+                    <div class="product-img-upload-wrap img-upload-wrap">
+                        <span class="add-img">+</span>
+                    </div>
+                    <input type="submit" value="상품 등록하기" />
+                    <span class="del-btn" onclick="javascript:delProduct()">삭제하기</span>
+                </div>
+            </form>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+        // 이미지 파일 추가 버튼
+        $('.add-img').click(function(){
+            var idx = $('.img-upload-wrap').children().length;
+            var fileadd = '<div class="img-wrap img-wrap'+idx+'">'
+                +'   <input class="img-file" style="display: none" type="file" accept="image/*" id="img1" name="simg'+idx+'" />'
+                +'   <span class="remove-btn"><img src="../resource/image/manager/close-btn.png"></span>'
+                +'   <img class="preview" src="https://via.placeholder.com/100x100">'
+                +'</div>';
+            $(this).parents(".img-upload-wrap").append(fileadd);
+            $("input[name='simg" + idx + "']").click();
+            $('.img-upload-wrap').on('change', '.img-file',  function(e) {
+
+                var files = e.target.files;
+                var filesArr = Array.prototype.slice.call(files);
+                var preview = $(".img-wrap" + idx).find('.preview');
+
+                filesArr.forEach(function(f) {
+                    if(!f.type.match("image.*")) {
+                        alert("확장자는 이미지 확장자만 가능합니다.");
+                        return;
+                    }
+                    sel_file = f;
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.attr("src", e.target.result);
+
+                    }
+                    reader.readAsDataURL(f);
+                });
+            });
+
+            $('.add-img').hide();
+        });
+
+        // 이미지 추가 파일 삭제
+        $('.img-upload-wrap').on('click', '.remove-btn' ,function() {
+            if(confirm('해당이미지는 바로 삭제됩니다. 그래도 진행하시겠습니까?')){
+                deleteImage(this);
+            }
+        });
+
+        function deleteImage(target){
+            var mfile = $(target).parents(".img-wrap").children('input[name="mfile"]').val();
+            var jsonData = {
+                mfile : mfile
+            };
+
+            if(mfile != undefined && mfile != ''){
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-HTTP-Method-Override": "POST"
+                    },
+                    url: ServerUrl+"/manager/deleteProductFile",
+                    data: JSON.stringify(jsonData),
+                    success: function (result) {
+                        console.log(result);
+                        $(target).parents(".img-wrap").remove();
+                        $('.add-img').show();
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                        alert("이미지 삭제에 문제가 발생하였습니다. 관리자에게 문의하세요.");
+                    }
+                });
+            } else {
+                $(target).parents(".img-wrap").remove();
+            }
+        };
+
+    });
+
+    // Validation
+    function checkForm(fileList) {
+        var mname = $("input[name=mname]").val();
+        var minfo = $(".minfo").val();
+        var price = $("input[name=price]").val();
+
+        if(mname == ""){
+            alert("메뉴명을 입력해주세요..");
+            $("input[name=mname]").focus();
+            return false;
+        }
+        else if(minfo == ""){
+            alert("메뉴 설명을 입력해주세요,");
+            $(".minfo").focus();
+            return false;
+        }
+        else if(price == ""){
+            alert("가격을 입력해주세요,");
+            $("input[name=price]").focus();
+            return false;
+        }
+
+        var formJson = {};
+        $.map($("form[name=menu-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+
+        formJson['files'] = fileList;
+        console.log(formJson);
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+formChg,
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert(msg);
+                }
+                if( cmd == 1){
+                    window.history.back();
+                }
+
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function saveImage(){
+        var data = new FormData(document.getElementById('menu-form'));
+
+        var file = document.getElementById('img1').value;
+
+        if(file == ''){ // 내용만 수정
+            checkForm([]);
+        } else {
+            $.ajax({
+                url: ServerUrl+"/file/upload",
+                processData: false,  // file전송시 필수
+                contentType: false,  // file전송시 필수
+                data: data,
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    checkForm(data.BODY);
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("메뉴정보를저장하지 못했습니다. 관리자에게 문의하십시오.")
+                }
+            });
+        }
+    };
+
+
+    function delProduct(){
+
+        var formJson = {};
+
+        var con = confirm("삭제하시겠습니까?");
+
+        if(con){
+            var data = {menu : mid};
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                url: ServerUrl+"/manager/deleteProduct",
+                data: JSON.stringify(data),
+                success: function(result) {
+                    console.log(result);
+                },
+                error: function(result) {
+                    console.log(result);
+                }
+            });
+
+            alert('삭제되었습니다.');
+            window.location.href = '/manager/productList?sid='+sid;
+        }else{
+            return;
+        }
+    }
+
+</script>
+
+</script>
+</body>
+</html>
+

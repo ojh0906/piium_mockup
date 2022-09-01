@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/login/login.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+
+</head>
+<body>
+    <div id="wrap">
+
+         <!-- Content Section -->
+         <section id="container">
+            <div class="inquiry-form-wrap">
+                <form name="inquiry-form" type="post"  onsubmit="return checkForm();">
+                    <div class="input-wrap">
+                        <input type="hidden" class="idCheck" value="0" />
+                        <p class="font-nomal input-label">전화번호 *</p>
+                        <div class="phone-inquiry-container">
+                            <div class="btn-input-wrap">
+                                <input type="text" name="phone" placeholder="전화번호를 입력해주세요." />
+                            </div>
+                            <div class="inquiry-wrap">
+                                <a class="inquiry-btn id-check-btn color-white" href="javascript:idCheck();">인증번호 전송</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <div class="phone-inquiry-container">
+                            <input type="hidden" class="inquiryCheck" value="0" />
+                            <div class="btn-input-wrap">
+                                <input type="text" name="inquiry" placeholder="인증번호를 입력해주세요." />
+                            </div>
+                            <div class="inquiry-wrap">
+                                <a class="inquiry-btn id-check-btn" href="javascript:inquiryCheck();">인증</a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="inquiry-success">인증이 완료되었습니다.</span> <span class="inquiry-fail">인증번호를 다시 확인해주세요.</span>
+
+                    <input class="register-submit mt-short" type="submit" value="다음"/>
+
+                </form>
+
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+    //Form Validation
+    function checkForm() {
+        var inquiry = $("input[name=inquiry]").val();
+
+
+        if(inquiry == ""){
+            alert("인증번호를 입력해주세요.");
+            $("input[name=inquiry]").focus();
+            return false;
+        }
+    }
+
+    // ID 중복체크
+    function inquiryCheck(){
+        $('.inquiry-success').show();
+
+        $('.inquiryCheck').val(1);
+    }
+
+
+</script>
+</body>
+</html>
+
+

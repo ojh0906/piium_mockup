@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/manager/manager.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/swiper.min.css" />
+
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="../resource/js/fontawesome.min.js"></script>
+    <script src="../resource/js/swiper.min.js"></script>
+    <script src="../resource/js/common.js"></script>
+
+</head>
+
+
+<script>
+    var sid;
+    $( document ).ready(function() {
+        sid = getParameterByName('sid');
+        managerUrl(sid);
+        getProductListManager(sid);
+
+        $('.edit-btn').attr('href', '/manager/editProduct?cmd=1&sid='+sid)
+    });
+
+</script>
+
+<body>
+    <div id="wrap">
+        <!-- Header Section -->
+        <div class="header-container">
+            <div class="head-wrapper">
+                <img src="../resource/image/common/header-icon.png">
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <section id="container">
+            <div class="manager-header">
+                <p>피움 사장님</p>
+            </div>
+            <div class="manager-full-body">
+                <div class="edit-btn-wrap">
+                    <a class="edit-btn" href="/manager/editProduct?cmd=1">상품 등록하기</a>
+                </div>
+
+                <div class="tab-content-wrap" id="menuList">
+                    <p>등록된 상품이 없습니다.</p>
+                </div>
+            </div>
+
+            <!-- Floating Bottom Menu -->
+            <div class="floating-menu-container">
+                <div class="wrapper">
+                    <div class="menu-item">
+                        <a id="myStore" href="/manager/myStore">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/manager/store-off.png">
+                            </div>
+                            <p class="menu-name">내 가게</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a id="productList" href="/manager/productList">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/manager/product-off.png">
+                            </div>
+                            <p class="menu-name">상품</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a id="couponList" href="/manager/couponList">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/manager/coupon-off.png">
+                            </div>
+                            <p class="menu-name">쿠폰</p>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a id="reviewList" href="/manager/reviewList">
+                            <div class="icon-wrap">
+                                <img src="../resource/image/manager/review-off.png">
+                            </div>
+                            <p class="menu-name">리뷰</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function (e) {
+
+    });
+
+</script>
+
+</script>
+</body>
+</html>
+

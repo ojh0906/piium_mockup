@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <title>피움</title>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/common.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/common/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../resource/css/login/login.css" />
+
+    <!-- js -->
+    <script src="../resource/js/jquery-1.12.4.min.js"></script>
+    <script src="./resource/js/common.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+
+</head>
+<body>
+<div id="wrap">
+
+    <!-- Content Section -->
+    <section id="container">
+        <p class="font-big login-title">간편하게 <strong>회원가입</strong>하고<br>다양한 서비스를 이용하세요.</p>
+        <p class="register-text font-small"><strong>* 필수입력</strong></p>
+
+        <div class="register-form-wrap">
+            <form name="register-form" type="post" onsubmit="event.preventDefault(); return checkForm();">
+                <input type="hidden" name="policyyn" th:value="${event}"/>
+                <input type="hidden" name="role" th:value="${role}"/>
+                <div class="input-wrap">
+                    <input type="hidden" class="idCheck" value="0" />
+                    <p class="font-nomal input-label">아이디 * <span class="sub-text id-success">사용가능한 아이디 입니다.</span> <span class="sub-text id-fail">이미 등록된 아이디 입니다.</span></p>
+                    <div class="btn-input-container">
+                        <div class="btn-input-wrap">
+                            <input type="text" name="id" placeholder="아이디를 입력해주세요." />
+                        </div>
+                        <div class="inquiry-wrap">
+                            <a class="inquiry-btn id-check-btn" href="javascript:idCheck();">중복 확인</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-wrap">
+                    <p class="font-nomal input-label">비밀번호 *</p>
+                    <input type="password" id="pw1" name="pw" placeholder="비밀번호를 입력해주세요" />
+                </div>
+                <div class="input-wrap">
+                    <input type="hidden" class="pwCheck" value="0" />
+                    <p class="font-nomal input-label">비밀번호 재입력*<span class="sub-text pw-success">비밀번호가 일치합니다.</span> <span class="sub-text pw-fail">비밀번호가 일치하지 않습니다.</span></p>
+                    <input type="password" id="pw2" placeholder="비밀번호를 한번 더 입력해주세요" />
+                </div>
+                <div class="input-wrap">
+                    <p class="font-nomal input-label">이름 *</p>
+                    <input type="text" name="name" placeholder="이름을 입력해주세요." />
+                </div>
+                <div class="input-wrap">
+                    <p class="font-nomal input-label">전화번호</p>
+                    <input type="text" name="phone" id="phoneNum" maxlength="13" placeholder="전화번호를 입력해주세요" />
+                </div>
+                <div class="input-wrap">
+                    <p class="font-nomal input-label">이메일</p>
+                    <input type="text" name="email" placeholder="이메일을 입력해주세요." />
+                </div>
+                <div class="input-wrap">
+                    <p class="font-nomal input-label ">주소</p>
+                    <div class="btn-input-container">
+                        <div class="btn-input-wrap">
+                            <input type="text" name="address" id="address" placeholder="주소를 입력해주세요." readonly/>
+                        </div>
+                        <div class="inquiry-wrap">
+                            <a class="inquiry-btn address-search" onClick="openDaumZipAddress();" >주소 검색</a>
+                        </div>
+                    </div>
+
+                    <div id="addrSearch" style="display:none;border:1px solid #DDDDDD;margin-top:20px"></div>
+                </div>
+
+                <input class="register-submit mt-short" type="submit" value="다음"/>
+
+            </form>
+
+        </div>
+    </section>
+</div>
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        // 비밀 번호 재입력 일치 체크
+        $("#pw2").on("change keyup paste", function () {
+            var pwd1 = $("#pw1").val();
+            var pwd2 = $("#pw2").val();
+            if (pwd1 != "" || pwd2 != "") {
+                if (pwd1 == pwd2) {
+                    $(".pw-success").show();
+                    $(".pw-fail").hide();
+                    $('.pwCheck').val(1);
+                } else {
+                    $(".pw-success").hide();
+                    $(".pw-fail").show();
+                    $('.pwCheck').val(0);
+                }
+            }
+        });
+
+        var autoHypenPhone = function (str) {
+            str = str.replace(/[^0-9]/g, '');
+            var tmp = '';
+            if (str.length < 4) {
+                return str;
+            } else if (str.length < 7) {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3);
+                return tmp;
+            } else if (str.length < 11) {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3, 3);
+                tmp += '-';
+                tmp += str.substr(6);
+                return tmp;
+            } else {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3, 4);
+                tmp += '-';
+                tmp += str.substr(7);
+                return tmp;
+            }
+
+            return str;
+        }
+
+
+        var phoneNum = document.getElementById('phoneNum');
+
+        phoneNum.onkeyup = function () {
+            console.log(this.value);
+            this.value = autoHypenPhone(this.value);
+        }
+
+        // 다음 주소검색 API
+        $(".inquiry-btn").click(function(){
+
+            // 우편번호 찾기 화면을 넣을 element를 지정
+            var element_wrap = document.getElementById("addrSearch");
+
+            // wrap 레이어가 off된 상태라면 다음 우편번호 레이어를 open 한다.
+            if ($("#addrSearch").css("display") == "none") {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        $("#zonecode").val(data.zonecode);
+                        $("#address").val(data.address);
+                        $("#address_detail").focus();
+                        console.log(data);
+                    }
+
+                    // 사용자가 값을 주소를 선택해서 레이어를 닫을 경우
+                    // 다음 주소록 레이어를 완전히 종료 시킨다.
+                    , onclose: function (state) {
+                        if (state === "COMPLETE_CLOSE") {
+
+                            // 콜백함수를 실행하여 슬라이드 업 기능이 실행 완료후 작업을 진행한다.
+                            offDaumZipAddress(function () {
+                                element_wrap.style.display = "none";
+                            });
+                        }
+                    }
+                }).embed(element_wrap);
+
+                // 슬라이드 다운 기능을 이용해 레이어 창을 오픈한다.
+                $("#addrSearch").slideDown();
+            }
+
+            // warp 레이어가 open된 상태라면 다음 우편번호 레이어를 off 상태로 변경한다.
+            else {
+
+                // 콜백함수를 실행하여 슬라이드 업 기능이 실행 완료후 작업을 진행한다.
+                offDaumZipAddress(function () {
+                    element_wrap.style.display = "none";
+                    return false;
+                });
+            }
+
+        });
+
+
+
+        function offDaumZipAddress() {
+
+            // 슬라이드 업 기능을 이용해 레이어 창을 닫는다.
+            $("#addrSearch").slideUp();
+
+        }
+
+    });
+
+    //Form Validation
+    function checkForm() {
+        var userid = $("input[name=userid]").val();
+        var idCheck = $('.idCheck').val();
+        var pw = $("input[name=userpw]").val();
+        var pwCheck = $('.pwCheck').val();
+        var name = $("input[name=name]").val();
+        var phone = $("input[name=phone]").val();
+        var address = $("input[name=address]").val();
+
+        if(userid == ""){
+            alert("아이디를 입력해주세요.");
+            $("input[name=userid]").focus();
+            return false;
+        }
+        else if(idCheck == 0){
+            alert("아이디 중복체크를 해주세요.");
+            $(".id-check-btn").focus();
+            return false;
+        }
+        else if(pw == ""){
+            alert("비밀번호를 입력해주세요.");
+            $("input[name=userpw]").focus();
+            return false;
+        }
+        else if(pwCheck == 0){
+            alert("비밀번호가 일치하지 않습니다.");
+            $("#pw2").focus();
+            return false;
+        }
+
+        var formJson = {};
+
+        $.map($("form[name=register-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/member/saveMember",
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY != null){
+                    alert("저장되었습니다.");
+                    window.location.replace('/login');
+                }
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+    // ID 중복체크
+    function idCheck(){
+        var formJson = {};
+
+        $.map($("form[name=register-form]").serializeArray(), function(n, i){
+            formJson[n['name']] = n['value'];
+        });
+        console.log(formJson);
+
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/main/getIdCheck",
+            data: JSON.stringify(formJson),
+            success: function(result) {
+                if(result.BODY == null){
+                    $('.id-success').show();
+                    $('.id-fail').hide();
+                    $('.idCheck').val(1);
+                } else {
+                    $('.id-fail').show();
+                    $('.id-success').hide();
+                }
+                console.log(result);
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function test2(){
+        var unindexed_array = $("form[name=register-form]").serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+        console.log(indexed_array);
+    }
+    function test(){
+        var unindexed_array = $("form[name=register-form]").serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+        var data = {"MEMBER":1};
+        $.ajax({
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            url: ServerUrl+"/member/getMember",
+            data: JSON.stringify(indexed_array),
+            success: function(result) {
+                console.log(result);
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+
+
+
+
