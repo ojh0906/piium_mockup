@@ -50,7 +50,7 @@
         <section id="container">
 
             <div class="review-header">
-                <a href="javascript:window.history.back();"><img src="../resource/image/market/close-icon.png"></a>
+                <a href="javascript:window.history.back();"><img src="../resource/image/store/close-icon.png"></a>
                 <p>리뷰 작성</p>
             </div>
             <div class="review-body">
@@ -182,7 +182,7 @@
             success: function(result) {
                 if(result.BODY != null){
                     alert('등록되었습니다.');
-                    $(location).attr('href', '/main/info?sid='+sid);
+                    $(location).attr('href', '/store/info?sid='+sid);
                 }
                 if( cmd == 1){
                     window.history.back();

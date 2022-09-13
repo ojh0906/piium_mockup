@@ -1,8 +1,8 @@
 //서버 주소 변수
 //var ServerUrl = "http://13.125.114.252";
 //  var ServerUrl = "http://localhost:8080";
-var ServerUrl = "http://3.39.240.88:8080";
-//var ServerUrl = "http://13.125.114.252:8080";
+// var ServerUrl = "http://13.125.114.252:8080";
+var ServerUrl = "https://api.piium.co.kr";
 // var ServerUrl = "https://market5478.com:8080";
 var currentDate = '';
 var currentTime = '';
@@ -93,7 +93,7 @@ function addComma(str){
     }
     return resultStr;
 }
-//가게 관리자 링크 설정
+//플로리스트 관리자 링크 설정
 function managerUrl(sid){
     $("#myStore").attr("href", "/manager/myStore?sid="+sid);
     $("#productList").attr("href", "/manager/productList?sid="+sid);
@@ -391,7 +391,6 @@ function getEnterMarketList(keyword, order, lat, lon){
                                 <div class="swiper-slide" onclick="location.href='/market/searchCategory?mid=${market.market}'">
                                    <div class="market-item"style="background: url(`+src+`)">
                                     </div>
-                                    <p class="market-name">${market.name}</p>
                                  </div>
                            
                                 `;
@@ -1514,7 +1513,6 @@ function getMenuListUser(sid){
                                     </div>
                                     <div class="info-wrap">
                                         <p class="menu-name">${menu.mname}</p>
-                                        <span class="quote">${menu.pricedt} 시세</span>
                                         <p class="menu-price">${menu.price}원</p>
                                     </div>
                                 </div>
@@ -1849,7 +1847,7 @@ function getUser(mid){
         }
     });
 }
-// 가게 관리자 계정 정보 수정 불러오기
+// 플로리스트 관리자 계정 정보 수정 불러오기
 function getUserDetail(mid){
     var data = {"member" : mid};
     $.ajax({
@@ -2179,9 +2177,9 @@ function managerStoreInfo(sid){
                 sInfo = result.BODY.sinfo;
             }
             $('.store-info').text(sInfo);
-            $('.store-info-wrap').click(function(){
-                $(location).attr('href', '/manager/editStore?cmd=2&sid='+sid);
-            });
+            // $('.store-info-wrap').click(function(){
+            //     $(location).attr('href', '/manager/editStore?cmd=2&sid='+sid);
+            // });
             //-------------------------------------------------------------//
 
 
@@ -2284,7 +2282,7 @@ function getManagaer(mid){
         }
     });
 }
-// 가게 관리자 계정 정보 수정 불러오기
+// 플로리스트 관리자 계정 정보 수정 불러오기
 function getmanagerDetail(mid){
     var data = {"member" : mid};
     $.ajax({
@@ -2721,7 +2719,7 @@ function getReviewListManager(sid){
                            <div class="item">
                                 <div class="top-wrap">
                                     <div class="rate-wrap">
-                                        <p><img src="../resource/image/market/rate-icon.png"> ${review.rate}</p>
+                                        <p><img src="../resource/image/store/rate-icon.png"> ${review.rate}</p>
                                     </div>
                                     <div class="user-info-wrap">
                                         <p class="id">`+reviewUserId(userId)+`</p>

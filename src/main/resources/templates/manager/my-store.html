@@ -36,13 +36,29 @@
         $('.go-mypage').attr('href', '/manager/myPage?mid='+mid);
     });
 </script>
+<style>
+    .edit-market {
+        font-size: 17px;
+        color: #c11717;
+        font-weight: 600;
+        float: right;
+        cursor: pointer;
+    }
+        .header-container .head-wrapper{
+            padding: 15px 0 0 0;
+            text-align: center;
+        }
+        .header-container .head-wrapper img{
+            width:145px;
+        }
 
+</style>
 <body>
     <div id="wrap">
         <!-- Header Section -->
         <div class="header-container">
             <div class="head-wrapper">
-                <img src="../resource/image/common/header-icon.png">
+                <img src="../resource/image/common/logo.png">
             </div>
         </div>
 
@@ -53,10 +69,11 @@
             </div>
             <div class="manager-body">
                 <div class="my-store-wrap">
-                    <p class="tit">내 가게</p>
+                    <p class="tit">내 가게 <span class="edit-market">정보수정</span></p>
+
                     <!-- 가게가 등록을 안했을 시 -->
                     <!-- <a class="edit-store">+ 내 가게 등록하기</a>
-                    <p class="text">가게를 등록하고 손쉽게 가게 관리를<br>시작해보세요.</p> -->
+                    <p class="text">가게를 등록하고 손쉽게 플로리스트 관리를<br>시작해보세요.</p> -->
                     <!-- 등록된 가게가 있을 시 -->
                     <div class="store-info-wrap">
                         <div class="img-wrap">
@@ -69,6 +86,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="user-ino-wrap">
                     <p class="tit" >내 정보</p>
                     <div class="link-wrap">
@@ -123,7 +141,12 @@
 
 <script type="text/javascript">
     $(function (e) {
-
+        $('.edit-market').click(function(){
+            $(location).attr('href', '/manager/editStore?cmd=2&sid='+sid);
+        });
+        $('.head-wrapper img').click(function (){
+            $(location).attr('href', '/manager/home?sid='+sid+'&mid='+mid);
+        });
     });
 
 </script>

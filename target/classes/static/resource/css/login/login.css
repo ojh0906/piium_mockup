@@ -81,7 +81,7 @@ input[type=text]::placeholder,input[type=password]::placeholder{
     cursor: pointer;
 }
 .login-btn:hover{
-    background-color: #343A40;
+    background-color: #F28181;
     transition: all 0.2s;
 }
 .login-menu-wrap{

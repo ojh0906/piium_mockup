@@ -172,6 +172,7 @@
 }
 .market-info-wrap .tab-wrap ul{
     width: 100%;
+    text-align: center;
 }
 .market-info-wrap .tab-wrap ul li{
     display: inline-block;
@@ -180,7 +181,7 @@
     color:#6C757D;
     font-weight: 600;
     cursor: pointer;
-    width: 24%;
+    width: 23%;
     position: relative;
 }
 .market-info-wrap .tab-wrap ul li:hover{

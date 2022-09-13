@@ -114,7 +114,7 @@ public class PageController {
 
     @GetMapping("/main/review")
     public String mainReview() {
-        return "market/write-review";
+        return "store/write-review";
     }
 
     @GetMapping("/main/policy")

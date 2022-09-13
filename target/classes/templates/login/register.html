@@ -24,6 +24,13 @@
 <body>
 <div id="wrap">
 
+    <style>
+        #__daum__layer_1{
+            min-width: none;
+            width: 100% !important;
+        }
+    </style>
+
     <!-- Content Section -->
     <section id="container">
         <p class="font-big login-title">간편하게 <strong>회원가입</strong>하고<br>다양한 서비스를 이용하세요.</p>
@@ -72,7 +79,7 @@
                         <div class="btn-input-wrap">
                             <input type="text" name="address" id="address" placeholder="주소를 입력해주세요." readonly/>
                         </div>
-                        <div class="inquiry-wrap">
+                        <div class="inquiry-wrap address-wrap">
                             <a class="inquiry-btn address-search" onClick="openDaumZipAddress();" >주소 검색</a>
                         </div>
                     </div>
@@ -146,7 +153,7 @@
         }
 
         // 다음 주소검색 API
-        $(".inquiry-btn").click(function(){
+        $(".address-wrap .inquiry-btn").click(function(){
 
             // 우편번호 찾기 화면을 넣을 element를 지정
             var element_wrap = document.getElementById("addrSearch");
@@ -249,7 +256,7 @@
             data: JSON.stringify(formJson),
             success: function(result) {
                 if(result.BODY != null){
-                    alert("저장되었습니다.");
+                    alert("회원가입 완료");
                     window.location.replace('/login');
                 }
             },

@@ -21,7 +21,15 @@
     <script src="../resource/js/common.js"></script>
 
 </head>
-
+<style>
+    .header-container .head-wrapper{
+        padding: 15px 0 0 0;
+        text-align: center;
+    }
+    .header-container .head-wrapper img{
+        width:145px;
+    }
+</style>
 
 <script>
     var sid;
@@ -29,7 +37,12 @@
         sid = getParameterByName('sid');
         managerUrl(sid);
         getCouponListManager(sid);
+        mid = sessionStorage.getItem("mid");
         $('.edit-btn').attr('href','/manager/editCoupon?cmd=1&sid='+sid);
+    });
+
+    $('.head-wrapper img').click(function (){
+        $(location).attr('href', '/manager/home?sid='+sid+'&mid='+mid);
     });
 
 </script>
@@ -39,7 +52,7 @@
         <!-- Header Section -->
         <div class="header-container">
             <div class="head-wrapper">
-                <img src="../resource/image/common/header-icon.png">
+                <img src="../resource/image/common/logo.png">
             </div>
         </div>
 

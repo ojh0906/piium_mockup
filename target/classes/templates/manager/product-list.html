@@ -28,20 +28,33 @@
     var sid;
     $( document ).ready(function() {
         sid = getParameterByName('sid');
+        mid = sessionStorage.getItem("mid");
         managerUrl(sid);
         getProductListManager(sid);
 
         $('.edit-btn').attr('href', '/manager/editProduct?cmd=1&sid='+sid)
+
+        $('.head-wrapper img').click(function (){
+            $(location).attr('href', '/manager/home?sid='+sid+'&mid='+mid);
+        });
     });
 
 </script>
-
+<style>
+    .header-container .head-wrapper{
+        padding: 15px 0 0 0;
+        text-align: center;
+    }
+    .header-container .head-wrapper img{
+        width:145px;
+    }
+</style>
 <body>
     <div id="wrap">
         <!-- Header Section -->
         <div class="header-container">
             <div class="head-wrapper">
-                <img src="../resource/image/common/header-icon.png">
+                <img src="../resource/image/common/logo.png">
             </div>
         </div>
 
